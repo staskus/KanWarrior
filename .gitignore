@@ -1,6 +1,6 @@
-.idea
 #ignore packages installed by npm
 node_modules
 *~
 .DS_STORE
 credentials.js
+.idea/
