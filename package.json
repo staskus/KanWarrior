@@ -1,0 +1,16 @@
+{
+  "name": "kanwarrior",
+  "version": "1.0.0",
+  "description": "TaskWarrior extension and visualization",
+  "main": "main.js",
+  "dependencies": {
+    "express": "^4.13.4",
+    "handlebar": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Povilas Staskus and Klaudijus Valintelis",
+  "license": "ISC"
+}
