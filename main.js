@@ -4,19 +4,12 @@ var text;
 var http = require("http");
 var fs = require('fs');
 var url = require('url');
-var task = require("./lib/Task");
+var Task = require("./lib/Task");
+var taskManager = require("./lib/TaskManager");
 var express = require('express');
 
 var app = express();
 
-//task.getOutput("list",(text)=> {
-//});
-
-
-exec(cmd, function(error, stdout, stderr) {
-  //console.log(stdout);
-  text=stdout;
-});
 
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/public'));
