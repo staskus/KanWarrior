@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Task Management</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href="../public/css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
   </head>
   <body>
+
+
     <div class="container text-center">
       <button class="btn btn-primary pull-right" id="add_new_board">Add Board</button>
       <h1>Welcome to my Task Management App</h1>
@@ -39,7 +41,7 @@
           <input type="hidden" id="parent_board" />
           <input type="hidden" id="edit_task" value="false" />
           <input type="hidden" id="edit_task_index" />
-          <button type="submit" class="btn btn-primary">Add Task</button>
+          <button type="submit" class="btn btn-primary" onclick="createTask()">Add Task</button>
         </form>
       </div>
     </div>
@@ -50,6 +52,7 @@
       </div>
       <h4 class="board-name">::TaskName::</h4>
       <p>::TaskDesc::</p>
+      <p>::TaskId::</p>
     </script>
     <script type="text/html" id="board_template">
       <h3 class="board-title">::BoardName::</h3>
@@ -57,6 +60,14 @@
       </ul>
       <button class="btn btn-sm add-task">Add Task</button>
     </script>
-    <script src="../public/js/script.js"></script>
+
+
+    <script src="js/script.js"></script>
+    <script src="js/helper.js"></script>
+    <script type="text/javascript">
+        var tasksList = JSON.parse(htmlDecode("<%= JSON.stringify(tasks) %>"));
+    </script>
+
+
   </body>
 </html>
