@@ -3,22 +3,36 @@ var MyApp = {
   CreateItem : function(itemData) {
     var self = this;
     this.id = itemData.id || '';
+    this.desc = itemData.desc || '';
+    this.status = itemData.status || '';
+    this.entry = itemData.entry || '';
+    this.project = itemData.project || '';
+    this.due = itemData.due || '';
+    this.urgency = itemData.urgency || '';
+    this.priority = itemData.priority || '';
+    //this.tags = itemData.tags || '';
+
     this.name = itemData.name || '';
     this.type = itemData.type || '';
-    this.desc = itemData.desc || '';
     this.parent = itemData.parent || '';
     this.parentIndex = this.parent != '' ? (this.parent).match(/\d+/)[0] : '';
+
     this.template = function() {
       var temp;
       if(this.type == "board") {
         temp = document.getElementById("board_template").innerHTML
         temp = temp.replace( new RegExp( "::BoardName::", "i" ), (this.name))
-      } 
+      }
       else {
         temp = document.getElementById("task_template").innerHTML
         temp = temp.replace( new RegExp( "::TaskId::", "i" ), (this.id))
-        temp = temp.replace( new RegExp( "::TaskName::", "i" ), (this.name))
         temp = temp.replace( new RegExp( "::TaskDesc::", "i" ), (this.desc))
+        temp = temp.replace( new RegExp( "::TaskStatus::", "i" ), (this.status))
+        temp = temp.replace( new RegExp( "::TaskEntry::", "i" ), (this.entry))
+        temp = temp.replace( new RegExp( "::TaskProject::", "i" ), (this.project))
+        temp = temp.replace( new RegExp( "::TaskDue::", "i" ), (this.due))
+        temp = temp.replace( new RegExp( "::TaskUrgency::", "i" ), (this.urgency))
+        temp = temp.replace( new RegExp( "::TaskPriority::", "i" ), (this.priority))
       }
       return temp;
     };
@@ -35,7 +49,6 @@ var MyApp = {
       }else{
         myArray = MyApp.list[self.parentIndex-1].tasks;
         myArray[myArray.length] = {
-            id : self.id,
           name : self.name,
           desc : self.desc,
           type : 'task',
@@ -56,8 +69,8 @@ var MyApp = {
     else {
       var el = document.createElement('li');
       el.className = "task";
-      el.setAttribute('data-index',  (this.list[myItem.parentIndex -1].tasks.length));
-      el.setAttribute('data-board-index',  myItem.parentIndex - 1);
+      el.setAttribute('data-index',  (this.list[myItem.parentIndex -1].tasks.length));// ???wtf is this
+      el.setAttribute('data-board-index',  myItem.parentIndex - 1);                   //  ??and this
       el.setAttribute('draggable',  'true');
       el.setAttribute('ondragstart',  'MyApp.drag(event)');
       el.innerHTML = myItem.template();
@@ -75,20 +88,17 @@ var MyApp = {
     this.saveData();
   },
   editItem : function(taskData) {
-    this.id = taskData.id;
     this.name = taskData.name;
     this.desc = taskData.desc;
     this.boardIndex = (taskData.parent).match(/\d+/)[0] -1;
     var element = document.getElementById(taskData.parent).getElementsByClassName('task-items')[0].getElementsByClassName('task')[taskData.taskIndex];
     element.getElementsByTagName('h4')[0].innerHTML = this.list[this.boardIndex].tasks[taskData.taskIndex].name = this.name;
     element.getElementsByTagName('p')[0].innerHTML = this.list[this.boardIndex].tasks[taskData.taskIndex].desc = this.desc;
-    element.getElementsByTagName('p')[1].innerHTML = this.list[this.boardIndex].tasks[taskData.taskIndex].id = this.id;
     this.saveData();
   },
   prepareEditPopup : function(index) {
     document.getElementById('add_task_name').value = this.list[index.boardIndex].tasks[index.taskIndex].name;
     document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc;
-    document.getElementById('add_task_id').value = this.list[index.boardIndex].tasks[index.taskIndex].id;
     document.getElementById('edit_task').value = "true";
     document.getElementById('edit_task_index').value = index.taskIndex;
     document.getElementById('parent_board').value = 'board_' + (parseInt(index.boardIndex) + 1);
@@ -122,13 +132,12 @@ var MyApp = {
   },
   addDragData : function(dragData, parentIndex) {
     myArray = MyApp.list[parentIndex-1].tasks;
-        myArray[myArray.length] = {
-            id : dragData[0].id,
-          name : dragData[0].name,
-          desc : dragData[0].desc,
-          type : 'task',
-          parent : 'board_' + parentIndex
-        } 
+    myArray[myArray.length] = {
+      name : dragData[0].name,
+      desc : dragData[0].desc,
+      type : 'task',
+      parent : 'board_' + parentIndex
+    }
   },
   allowDrop : function (ev) {
     ev.preventDefault();
@@ -168,7 +177,9 @@ var MyApp = {
 
 window.onload = function () {
   MyApp.init();
+
   document.getElementById('add_new_board').addEventListener('click', MyApp.openBoardForm);
+
   document.addEventListener('click', function(e) {
     var button = e.target;
     if(button.classList.contains("add-task")) {
@@ -186,15 +197,17 @@ window.onload = function () {
     }
   });
   document.getElementById('close_popup').addEventListener('click', MyApp.closePopup);
+
   document.getElementById('add_board_form').addEventListener('submit', function(event) {
     event.preventDefault();
-    var boardData = { 
-      name : document.getElementById('add_board_name').value, 
+    var boardData = {
+      name : document.getElementById('add_board_name').value,
       type :"board" }
     document.getElementById('add_board_name').value = "";
     MyApp.addItem(boardData)
     MyApp.closePopup();
   });
+
   document.getElementById('add_task_form').addEventListener('submit', function(event) {
     event.preventDefault();
     var taskData = {
@@ -210,7 +223,9 @@ window.onload = function () {
     else {
       MyApp.addItem(taskData);
     }
-      document.getElementById('add_task_id').value = "";
+
+
+    document.getElementById('add_task_id').value = "";
     document.getElementById('add_task_name').value = "";
     document.getElementById('add_task_desc').value = "";
     document.getElementById('parent_board').value = "";

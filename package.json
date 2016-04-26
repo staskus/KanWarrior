@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.13.4",
     "handlebar": "^1.0.0",
-    "ejs" : "^2.4.1"
+    "ejs" : "^2.4.1",
+    "body-parser" : "^1.15.0"
   },
   "devDependencies": {},
   "scripts": {
