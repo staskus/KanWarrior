@@ -2,21 +2,37 @@ var MyApp = {
   list : [],
   CreateItem : function(itemData) {
     var self = this;
+    this.id = itemData.id || '';
+    this.desc = itemData.desc || '';
+    this.status = itemData.status || '';
+    this.entry = itemData.entry || '';
+    this.project = itemData.project || '';
+    this.due = itemData.due || '';
+    this.urgency = itemData.urgency || '';
+    this.priority = itemData.priority || '';
+    //this.tags = itemData.tags || '';
+
     this.name = itemData.name || '';
     this.type = itemData.type || '';
-    this.desc = itemData.desc || '';
     this.parent = itemData.parent || '';
     this.parentIndex = this.parent != '' ? (this.parent).match(/\d+/)[0] : '';
+
     this.template = function() {
       var temp;
       if(this.type == "board") {
         temp = document.getElementById("board_template").innerHTML
         temp = temp.replace( new RegExp( "::BoardName::", "i" ), (this.name))
-      } 
+      }
       else {
         temp = document.getElementById("task_template").innerHTML
-        temp = temp.replace( new RegExp( "::TaskName::", "i" ), (this.name))
+        temp = temp.replace( new RegExp( "::TaskId::", "i" ), (this.id))
         temp = temp.replace( new RegExp( "::TaskDesc::", "i" ), (this.desc))
+        temp = temp.replace( new RegExp( "::TaskStatus::", "i" ), (this.status))
+        temp = temp.replace( new RegExp( "::TaskEntry::", "i" ), (this.entry))
+        temp = temp.replace( new RegExp( "::TaskProject::", "i" ), (this.project))
+        temp = temp.replace( new RegExp( "::TaskDue::", "i" ), (this.due))
+        temp = temp.replace( new RegExp( "::TaskUrgency::", "i" ), (this.urgency))
+        temp = temp.replace( new RegExp( "::TaskPriority::", "i" ), (this.priority))
       }
       return temp;
     };
@@ -53,8 +69,8 @@ var MyApp = {
     else {
       var el = document.createElement('li');
       el.className = "task";
-      el.setAttribute('data-index',  (this.list[myItem.parentIndex -1].tasks.length));
-      el.setAttribute('data-board-index',  myItem.parentIndex - 1);
+      el.setAttribute('data-index',  (this.list[myItem.parentIndex -1].tasks.length));// ???wtf is this
+      el.setAttribute('data-board-index',  myItem.parentIndex - 1);                   //  ??and this
       el.setAttribute('draggable',  'true');
       el.setAttribute('ondragstart',  'MyApp.drag(event)');
       el.innerHTML = myItem.template();
@@ -116,12 +132,12 @@ var MyApp = {
   },
   addDragData : function(dragData, parentIndex) {
     myArray = MyApp.list[parentIndex-1].tasks;
-        myArray[myArray.length] = {
-          name : dragData[0].name,
-          desc : dragData[0].desc,
-          type : 'task',
-          parent : 'board_' + parentIndex
-        } 
+    myArray[myArray.length] = {
+      name : dragData[0].name,
+      desc : dragData[0].desc,
+      type : 'task',
+      parent : 'board_' + parentIndex
+    }
   },
   allowDrop : function (ev) {
     ev.preventDefault();
@@ -142,18 +158,9 @@ var MyApp = {
     this.saveData();
   },
   init : function () {
-    if(window.localStorage && localStorage.myData == undefined) {
-      localStorage.myData =  JSON.stringify([{ id : 'board_1',
-                                  name : 'Name this Board',
-                                  type: 'board',
-                                  tasks : [ {
-                                    desc: 'Add description',
-                                    name: 'Add Name',
-                                    parent: 'board_1',
-                                    type: 'task'
-                                }]
-                             }]);
-    }
+
+    localStorage.myData =  loadTasks();// from TaskWarrior
+
     var i, j, board, task, myData = JSON.parse(localStorage.myData);
     for(i in myData) {
       board = myData[i];
@@ -170,7 +177,9 @@ var MyApp = {
 
 window.onload = function () {
   MyApp.init();
+
   document.getElementById('add_new_board').addEventListener('click', MyApp.openBoardForm);
+
   document.addEventListener('click', function(e) {
     var button = e.target;
     if(button.classList.contains("add-task")) {
@@ -188,18 +197,21 @@ window.onload = function () {
     }
   });
   document.getElementById('close_popup').addEventListener('click', MyApp.closePopup);
+
   document.getElementById('add_board_form').addEventListener('submit', function(event) {
     event.preventDefault();
-    var boardData = { 
-      name : document.getElementById('add_board_name').value, 
+    var boardData = {
+      name : document.getElementById('add_board_name').value,
       type :"board" }
     document.getElementById('add_board_name').value = "";
     MyApp.addItem(boardData)
     MyApp.closePopup();
   });
+
   document.getElementById('add_task_form').addEventListener('submit', function(event) {
     event.preventDefault();
-    var taskData = { 
+    var taskData = {
+        id : document.getElementById('add_task_id').value,
       name : document.getElementById('add_task_name').value,
       desc : document.getElementById('add_task_desc').value,
       parent : document.getElementById('parent_board').value,
@@ -211,6 +223,9 @@ window.onload = function () {
     else {
       MyApp.addItem(taskData);
     }
+
+
+    document.getElementById('add_task_id').value = "";
     document.getElementById('add_task_name').value = "";
     document.getElementById('add_task_desc').value = "";
     document.getElementById('parent_board').value = "";
