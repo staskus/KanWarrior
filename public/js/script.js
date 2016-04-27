@@ -97,8 +97,8 @@ var MyApp = {
     this.saveData();
   },
   prepareEditPopup : function(index) {
-    document.getElementById('add_task_name').value = this.list[index.boardIndex].tasks[index.taskIndex].name;
-    document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc;
+    //document.getElementById('add_task_name').value = this.list[index.boardIndex].tasks[index.taskIndex].name;
+    //document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc;
     document.getElementById('edit_task').value = "true";
     document.getElementById('edit_task_index').value = index.taskIndex;
     document.getElementById('parent_board').value = 'board_' + (parseInt(index.boardIndex) + 1);
@@ -208,29 +208,29 @@ window.onload = function () {
     MyApp.closePopup();
   });
 
-  document.getElementById('add_task_form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var taskData = {
-        id : document.getElementById('add_task_id').value,
-      name : document.getElementById('add_task_name').value,
-      desc : document.getElementById('add_task_desc').value,
-      parent : document.getElementById('parent_board').value,
-      taskIndex : document.getElementById('edit_task_index').value,
-      type : "task" }
-    if(document.getElementById('edit_task').value == "true") {
-      MyApp.editItem(taskData);
-    }
-    else {
-      MyApp.addItem(taskData);
-    }
-
-
-    document.getElementById('add_task_id').value = "";
-    document.getElementById('add_task_name').value = "";
-    document.getElementById('add_task_desc').value = "";
-    document.getElementById('parent_board').value = "";
-    document.getElementById('edit_task').value = "false";
-    document.getElementById('edit_task_index').value = "";
-    MyApp.closePopup();
-  });
+  //document.getElementById('add_task_form').addEventListener('submit', function(event) {
+  //  event.preventDefault();
+  //  var taskData = {
+  //      id : document.getElementById('add_task_id').value,
+  //    name : document.getElementById('add_task_name').value,
+  //    desc : document.getElementById('add_task_desc').value,
+  //    parent : document.getElementById('parent_board').value,
+  //    taskIndex : document.getElementById('edit_task_index').value,
+  //    type : "task" }
+  //  if(document.getElementById('edit_task').value == "true") {
+  //    MyApp.editItem(taskData);
+  //  }
+  //  else {
+  //    MyApp.addItem(taskData);
+  //  }
+  //
+  //
+  //  document.getElementById('add_task_id').value = "";
+  //  document.getElementById('add_task_name').value = "";
+  //  document.getElementById('add_task_desc').value = "";
+  //  document.getElementById('parent_board').value = "";
+  //  document.getElementById('edit_task').value = "false";
+  //  document.getElementById('edit_task_index').value = "";
+  //  MyApp.closePopup();
+  //});
 }

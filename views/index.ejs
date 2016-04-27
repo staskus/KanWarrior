@@ -31,6 +31,7 @@
     <div class="overlay">
       <div class="popup">
         <button id="close_popup" class="btn btn-xs">x</button>
+
         <h2 class="add-board-form-title inactive">Add New Board</h2>
         <form id="add_board_form" class="inactive">
           <div class="form-group">
@@ -39,21 +40,35 @@
           </div>
           <button type="submit" class="btn btn-primary">Add Board</button>
         </form>
+
+          <!--//&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
         <h2 class="add-task-form-title inactive">Add New Task</h2>
-        <form id="add_task_form" class="inactive">
+        <form id="add_task_form" class="inactive" action="/new_task" method="post">
+
           <div class="form-group">
-            <label for="add_task_name">Add Task Name</label>
-            <input type="text" class="form-control" id="add_task_name" placeholder="Task Name">
+              <label for="add_task_desc">Task Description</label>
+              <textarea class="form-control" id="add_task_desc" placeholder="Task Description" name="description" required></textarea>
+
+              <label for="add_task_due_date">Due date</label>
+              <input type="date" class="form-control" id="add_task_due_date" placeholder="" name="due">
+
+              <label for="add_task_priority">Priority</label>
+              <input type="text" class="form-control" id="add_task_priority" placeholder="" name="priority">
+
+              <label for="add_task_project">Project</label>
+              <input type="text" class="form-control" id="add_task_project" placeholder="" name="project">
+
+              <label for="add_task_tags">Tags</label>
+              <input type="text" class="form-control" id="add_task_tags" placeholder="" name="tags">
           </div>
-          <div class="form-group">
-            <label for="add_task_desc">Add Task Description</label>
-            <textarea type="text" class="form-control" id="add_task_desc" placeholder="Task Description"></textarea>
-          </div>
+
           <input type="hidden" id="parent_board" />
           <input type="hidden" id="edit_task" value="false" />
           <input type="hidden" id="edit_task_index" />
-          <button type="submit" class="btn btn-primary" onclick="createTask()">Add Task</button>
+          <button type="submit" class="btn btn-primary">Add Task</button>
         </form>
+
       </div>
     </div>
 
