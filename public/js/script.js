@@ -10,7 +10,7 @@ var MyApp = {
     this.due = itemData.due || '';
     this.urgency = itemData.urgency || '';
     this.priority = itemData.priority || '';
-    //this.tags = itemData.tags || '';
+    this.tags = itemData.tags || '';
 
     this.name = itemData.name || '';
     this.type = itemData.type || '';
@@ -33,6 +33,7 @@ var MyApp = {
         temp = temp.replace( new RegExp( "::TaskDue::", "i" ), (this.due))
         temp = temp.replace( new RegExp( "::TaskUrgency::", "i" ), (this.urgency))
         temp = temp.replace( new RegExp( "::TaskPriority::", "i" ), (this.priority))
+        temp = temp.replace( new RegExp( "::TaskTags::", "i" ), (this.tags))
       }
       return temp;
     };

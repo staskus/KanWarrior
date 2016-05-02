@@ -54,13 +54,20 @@
               <input type="date" class="form-control" id="add_task_due_date" placeholder="" name="due">
 
               <label for="add_task_priority">Priority</label>
-              <input type="text" class="form-control" id="add_task_priority" placeholder="" name="priority">
+              <select class="form-control" id="add_task_priority" name="priority">
+                  <option></option>
+                  <option>H</option>
+                  <option>M</option>
+                  <option>L</option>
+              </select>
+              <br>
 
               <label for="add_task_project">Project</label>
               <input type="text" class="form-control" id="add_task_project" placeholder="" name="project">
 
               <label for="add_task_tags">Tags</label>
               <input type="text" class="form-control" id="add_task_tags" placeholder="" name="tags">
+              <small>Add space between multiple tags</small>
           </div>
 
           <input type="hidden" id="parent_board" />
@@ -85,6 +92,7 @@
       <p>Due: ::TaskDue::</p>
       <p>Urgency: ::TaskUrgency::</p>
       <p>Priority: ::TaskPriority::</p>
+      <p>Tags: ::TaskTags::</p>
     </script>
 
     <script type="text/html" id="board_template">
