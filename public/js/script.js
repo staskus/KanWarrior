@@ -84,6 +84,7 @@ var MyApp = {
     var element = event.target.parentNode.parentNode;
     var taskIndex = element.getAttribute('data-index');
     var boardIndex = element.getAttribute('data-board-index');
+    deleteTask(parseInt(taskIndex));
     element.remove();
     MyApp.list[boardIndex].tasks.splice(taskIndex, 1);
     this.saveData();
@@ -160,9 +161,9 @@ var MyApp = {
   },
   init : function () {
 
-    localStorage.myData =  loadTasks();// from TaskWarrior
-
-    var i, j, board, task, myData = JSON.parse(localStorage.myData);
+    //localStorage.myData =  loadTasks();// from TaskWarrior
+    //var i, j, board, task, myData = JSON.parse(localStorage.myData);
+    var i, j, board, task, myData =  JSON.parse(loadTasks());
     for(i in myData) {
       board = myData[i];
       this.addItem(board);

@@ -82,9 +82,13 @@
     <script type="text/html" id="task_template">
       <div class="task-actions">
         <button class="btn btn-xs edit-task">Edit</button>
-        <button class="btn btn-xs delete-task">Delete</button>
+          <!--<form id="delete_task_form" action="/delete_task" method="post">-->
+              <!--<input hidden value="">-->
+              <!--<button type="submit" class="btn btn-xs">Delete</button>-->
+          <button class="btn btn-xs delete-task">Delete</button>
+          <!--</form>-->
       </div>
-      <h4 class="board-name">::TaskDesc::</h4>
+      <h4>::TaskDesc::</h4>
       <p>ID: ::TaskId::</p>
       <p>Status: ::TaskStatus::</p>
       <p>Entry: ::TaskEntry::</p>
