@@ -53,6 +53,7 @@ var MyApp = {
         var tagsStr = self.tags.join(' '); // for display/update purposes
 
         myArray[myArray.length] = {
+          id : self.id,
           desc : self.desc,
           due : self.due,
           priority : self.priority,
@@ -106,6 +107,8 @@ var MyApp = {
     this.saveData();
   },
   prepareEditPopup : function(index) { // for editing task
+
+    document.getElementById('task-id').value = this.list[index.boardIndex].tasks[index.taskIndex].id;
     document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc; //load fields to form
     document.getElementById('add_task_due_date').value = this.list[index.boardIndex].tasks[index.taskIndex].due;
     document.getElementById('add_task_priority').value = this.list[index.boardIndex].tasks[index.taskIndex].priority;
