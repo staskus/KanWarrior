@@ -7,6 +7,7 @@
     <title>Task Management</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   </head>
   <body>
 
@@ -43,9 +44,8 @@
 
           <!--//&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
 
-        <h2 class="add-task-form-title inactive">Add New Task</h2>
+        <h2 id="task-title" class="add-task-form-title inactive">Add New Task</h2>
         <form id="add_task_form" class="inactive" action="/new_task" method="post">
-
           <div class="form-group">
               <label for="add_task_desc">Task Description</label>
               <textarea class="form-control" id="add_task_desc" placeholder="Task Description" name="description" required></textarea>
@@ -73,7 +73,7 @@
           <input type="hidden" id="parent_board" />
           <input type="hidden" id="edit_task" value="false" />
           <input type="hidden" id="edit_task_index" />
-          <button type="submit" class="btn btn-primary">Add Task</button>
+          <button id="task-submit" type="submit" class="btn btn-primary">Add Task</button>
         </form>
 
       </div>
