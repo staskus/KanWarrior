@@ -10,7 +10,7 @@ var MyApp = {
     this.due = itemData.due || '';
     this.urgency = itemData.urgency || '';
     this.priority = itemData.priority || '';
-    //this.tags = itemData.tags || '';
+    this.tags = itemData.tags || '';
 
     this.name = itemData.name || '';
     this.type = itemData.type || '';
@@ -33,6 +33,7 @@ var MyApp = {
         temp = temp.replace( new RegExp( "::TaskDue::", "i" ), (this.due))
         temp = temp.replace( new RegExp( "::TaskUrgency::", "i" ), (this.urgency))
         temp = temp.replace( new RegExp( "::TaskPriority::", "i" ), (this.priority))
+        temp = temp.replace( new RegExp( "::TaskTags::", "i" ), (this.tags))
       }
       return temp;
     };
@@ -48,9 +49,16 @@ var MyApp = {
         }
       }else{
         myArray = MyApp.list[self.parentIndex-1].tasks;
+
+        var tagsStr = self.tags.join(' '); // for display/update purposes
+
         myArray[myArray.length] = {
-          name : self.name,
+          id : self.id,
           desc : self.desc,
+          due : self.due,
+          priority : self.priority,
+          project : self.project,
+          tags : tagsStr,
           type : 'task',
           parent : 'board_' + self.parentIndex
         }
@@ -83,6 +91,7 @@ var MyApp = {
     var element = event.target.parentNode.parentNode;
     var taskIndex = element.getAttribute('data-index');
     var boardIndex = element.getAttribute('data-board-index');
+    deleteTask(parseInt(taskIndex));
     element.remove();
     MyApp.list[boardIndex].tasks.splice(taskIndex, 1);
     this.saveData();
@@ -94,11 +103,22 @@ var MyApp = {
     var element = document.getElementById(taskData.parent).getElementsByClassName('task-items')[0].getElementsByClassName('task')[taskData.taskIndex];
     element.getElementsByTagName('h4')[0].innerHTML = this.list[this.boardIndex].tasks[taskData.taskIndex].name = this.name;
     element.getElementsByTagName('p')[0].innerHTML = this.list[this.boardIndex].tasks[taskData.taskIndex].desc = this.desc;
+    //document.getElementById('add_task_project').value = this.list[this.boardIndex].tasks[taskData.taskIndex].project = this.project;
     this.saveData();
   },
-  prepareEditPopup : function(index) {
-    document.getElementById('add_task_name').value = this.list[index.boardIndex].tasks[index.taskIndex].name;
-    document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc;
+  prepareEditPopup : function(index) { // for editing task
+
+    document.getElementById('task-id').value = this.list[index.boardIndex].tasks[index.taskIndex].id;
+    document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc; //load fields to form
+    document.getElementById('add_task_due_date').value = this.list[index.boardIndex].tasks[index.taskIndex].due;
+    document.getElementById('add_task_priority').value = this.list[index.boardIndex].tasks[index.taskIndex].priority;
+    document.getElementById('add_task_project').value = this.list[index.boardIndex].tasks[index.taskIndex].project;
+    document.getElementById('add_task_tags').value = this.list[index.boardIndex].tasks[index.taskIndex].tags;
+
+    document.getElementById('task-title').innerHTML = "Edit Task";
+    document.getElementById('task-submit').innerHTML = "Edit Task";
+    document.getElementById('add_task_form').action = "/edit_task";
+
     document.getElementById('edit_task').value = "true";
     document.getElementById('edit_task_index').value = index.taskIndex;
     document.getElementById('parent_board').value = 'board_' + (parseInt(index.boardIndex) + 1);
@@ -108,8 +128,19 @@ var MyApp = {
     document.getElementsByClassName('add-board-form-title')[0].className = "add-board-form-title active";
     document.getElementById('add_board_form').className = "active";
   },
-  openTaskForm : function(event, index) {
+  openTaskForm : function(event, index) { // for adding task
     var source = event.target;
+
+    document.getElementById('add_task_desc').value = ""; //clear fields
+    document.getElementById('add_task_due_date').value = "";
+    document.getElementById('add_task_priority').value = "";
+    document.getElementById('add_task_project').value = "";
+    document.getElementById('add_task_tags').value = "";
+
+    document.getElementById('task-title').innerHTML = "Add Task";
+    document.getElementById('task-submit').innerHTML = "Add Task";
+    document.getElementById('add_task_form').action = "/new_task";
+
     document.getElementById('parent_board').value = source.parentNode.id;
     document.getElementsByClassName('overlay')[0].className = "overlay open";
     document.getElementsByClassName('add-task-form-title')[0].className = "add-task-form-title active";
@@ -159,9 +190,7 @@ var MyApp = {
   },
   init : function () {
 
-    localStorage.myData =  loadTasks();// from TaskWarrior
-
-    var i, j, board, task, myData = JSON.parse(localStorage.myData);
+    var i, j, board, task, myData =  JSON.parse(loadTasks());
     for(i in myData) {
       board = myData[i];
       this.addItem(board);
@@ -186,7 +215,8 @@ window.onload = function () {
       MyApp.openTaskForm(e);
     }
     if(button.classList.contains("delete-task")) {
-      MyApp.deleteItem(e);
+      if (confirm('Are you sure ?'))
+        MyApp.deleteItem(e);
     }
     if(button.classList.contains("edit-task")) {
       var index ={
@@ -208,29 +238,29 @@ window.onload = function () {
     MyApp.closePopup();
   });
 
-  document.getElementById('add_task_form').addEventListener('submit', function(event) {
-    event.preventDefault();
-    var taskData = {
-        id : document.getElementById('add_task_id').value,
-      name : document.getElementById('add_task_name').value,
-      desc : document.getElementById('add_task_desc').value,
-      parent : document.getElementById('parent_board').value,
-      taskIndex : document.getElementById('edit_task_index').value,
-      type : "task" }
-    if(document.getElementById('edit_task').value == "true") {
-      MyApp.editItem(taskData);
-    }
-    else {
-      MyApp.addItem(taskData);
-    }
-
-
-    document.getElementById('add_task_id').value = "";
-    document.getElementById('add_task_name').value = "";
-    document.getElementById('add_task_desc').value = "";
-    document.getElementById('parent_board').value = "";
-    document.getElementById('edit_task').value = "false";
-    document.getElementById('edit_task_index').value = "";
-    MyApp.closePopup();
-  });
+  //document.getElementById('add_task_form').addEventListener('submit', function(event) {
+  //  event.preventDefault();
+  //  var taskData = {
+  //      id : document.getElementById('add_task_id').value,
+  //    name : document.getElementById('add_task_name').value,
+  //    desc : document.getElementById('add_task_desc').value,
+  //    parent : document.getElementById('parent_board').value,
+  //    taskIndex : document.getElementById('edit_task_index').value,
+  //    type : "task" }
+  //  if(document.getElementById('edit_task').value == "true") {
+  //    MyApp.editItem(taskData);
+  //  }
+  //  else {
+  //    MyApp.addItem(taskData);
+  //  }
+  //
+  //
+  //  document.getElementById('add_task_id').value = "";
+  //  document.getElementById('add_task_name').value = "";
+  //  document.getElementById('add_task_desc').value = "";
+  //  document.getElementById('parent_board').value = "";
+  //  document.getElementById('edit_task').value = "false";
+  //  document.getElementById('edit_task_index').value = "";
+  //  MyApp.closePopup();
+  //});
 }

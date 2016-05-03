@@ -7,6 +7,7 @@
     <title>Task Management</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   </head>
   <body>
 
@@ -31,6 +32,7 @@
     <div class="overlay">
       <div class="popup">
         <button id="close_popup" class="btn btn-xs">x</button>
+
         <h2 class="add-board-form-title inactive">Add New Board</h2>
         <form id="add_board_form" class="inactive">
           <div class="form-group">
@@ -39,30 +41,54 @@
           </div>
           <button type="submit" class="btn btn-primary">Add Board</button>
         </form>
-        <h2 class="add-task-form-title inactive">Add New Task</h2>
-        <form id="add_task_form" class="inactive">
+
+          <!--//&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+        <h2 id="task-title" class="add-task-form-title inactive">Add New Task</h2>
+        <form id="add_task_form" class="inactive" action="/new_task" method="post">
           <div class="form-group">
-            <label for="add_task_name">Add Task Name</label>
-            <input type="text" class="form-control" id="add_task_name" placeholder="Task Name">
+              <label for="add_task_desc">Task Description</label>
+              <textarea class="form-control" id="add_task_desc" placeholder="Task Description" name="description" required></textarea>
+
+              <label for="add_task_due_date">Due date</label>
+              <input type="date" class="form-control" id="add_task_due_date" placeholder="" name="due">
+
+              <label for="add_task_priority">Priority</label>
+              <select class="form-control" id="add_task_priority" name="priority">
+                  <option></option>
+                  <option>H</option>
+                  <option>M</option>
+                  <option>L</option>
+              </select>
+              <br>
+
+              <label for="add_task_project">Project</label>
+              <input type="text" class="form-control" id="add_task_project" placeholder="" name="project">
+
+              <label for="add_task_tags">Tags</label>
+              <input type="text" class="form-control" id="add_task_tags" placeholder="" name="tags">
+              <small>Add space between multiple tags</small>
           </div>
-          <div class="form-group">
-            <label for="add_task_desc">Add Task Description</label>
-            <textarea type="text" class="form-control" id="add_task_desc" placeholder="Task Description"></textarea>
-          </div>
+          <input type="hidden" id="task-id" name="id" />
           <input type="hidden" id="parent_board" />
           <input type="hidden" id="edit_task" value="false" />
           <input type="hidden" id="edit_task_index" />
-          <button type="submit" class="btn btn-primary" onclick="createTask()">Add Task</button>
+          <button id="task-submit" type="submit" class="btn btn-primary">Add Task</button>
         </form>
+
       </div>
     </div>
 
     <script type="text/html" id="task_template">
       <div class="task-actions">
         <button class="btn btn-xs edit-task">Edit</button>
-        <button class="btn btn-xs delete-task">Delete</button>
+          <!--<form id="delete_task_form" action="/delete_task" method="post">-->
+              <!--<input hidden value="">-->
+              <!--<button type="submit" class="btn btn-xs">Delete</button>-->
+          <button class="btn btn-xs delete-task">Delete</button>
+          <!--</form>-->
       </div>
-      <h4 class="board-name">::TaskDesc::</h4>
+      <h4>::TaskDesc::</h4>
       <p>ID: ::TaskId::</p>
       <p>Status: ::TaskStatus::</p>
       <p>Entry: ::TaskEntry::</p>
@@ -70,6 +96,7 @@
       <p>Due: ::TaskDue::</p>
       <p>Urgency: ::TaskUrgency::</p>
       <p>Priority: ::TaskPriority::</p>
+      <p>Tags: ::TaskTags::</p>
     </script>
 
     <script type="text/html" id="board_template">
