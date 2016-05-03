@@ -57,11 +57,59 @@ function deleteTask(id) { // can't make ajax :/
 }
 
 function loadTasks(){
-    return JSON.stringify([{ id : 'board_1',
-        name : 'Name this Board',
+    var data = [];
+
+    var board1tasks = [];
+    var board2tasks = [];
+    var board3tasks = [];
+    var board4tasks = [];
+    var board5tasks = [];
+
+    for (var i = 0; i < tasksList.length; i++) {
+        if(tasksList[i].parent == "board_1")
+            board1tasks.push(tasksList[i]);
+        else if (tasksList[i].parent == "board_2")
+            board2tasks.push(tasksList[i]);
+        else if (tasksList[i].parent == "board_3")
+            board3tasks.push(tasksList[i]);
+        else if (tasksList[i].parent == "board_4")
+            board4tasks.push(tasksList[i]);
+        else if (tasksList[i].parent == "board_5")
+            board5tasks.push(tasksList[i]);
+    }
+
+
+    return JSON.stringify([
+        { id : 'board_1',
+        name : 'Inbox',
         type: 'board',
-        tasks: tasksList
-    }]);
+        tasks: board1tasks
+        }
+        ,
+        { id : 'board_2',
+        name : 'Second Backlog',
+        type: 'board',
+        tasks: board2tasks
+        }
+        ,
+        { id : 'board_3',
+            name : 'First Backlog',
+            type: 'board',
+            tasks: board3tasks
+        }
+        ,
+        { id : 'board_4',
+            name : 'In Progress',
+            type: 'board',
+            tasks: board4tasks
+        }
+        ,
+        { id : 'board_5',
+            name : 'Done',
+            type: 'board',
+            tasks: board5tasks
+        }
+    ]);
 }
 
 function htmlDecode(input){

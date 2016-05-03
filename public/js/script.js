@@ -193,9 +193,11 @@ var MyApp = {
     var i, j, board, task, myData =  JSON.parse(loadTasks());
     for(i in myData) {
       board = myData[i];
+      alert("nzn " + board.id);
       this.addItem(board);
       for(j in board.tasks) {
         var task = board.tasks[j];
+        //alert("nzn " + task.id);
         this.addItem(task);
       }
     }
