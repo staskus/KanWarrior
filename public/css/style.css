@@ -94,3 +94,6 @@ form {
 .add-board-form-title, .add-task-form-title {
   margin-top: 0;
 }
+.container {
+  width: 1500px !important;
+}
