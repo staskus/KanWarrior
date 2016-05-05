@@ -56,61 +56,62 @@ function deleteTask(id) { // can't make ajax :/
     //}
 }
 
-function loadTasks(){
-    var data = [];
+function returnBoards() {
 
-    var board1 = { id : 'board_1', name : 'Inbox', type: 'board', tasks: [] };
-    var board2 = { id : 'board_2', name : 'Second Backlog', type: 'board', tasks: [] };
-    var board3 = { id : 'board_3', name : 'First Backlog', type: 'board', tasks: [] };
-    var board4 = { id : 'board_4', name : 'In Progress', type: 'board', tasks: [] };
-    var board5 = { id : 'board_5', name : 'Done', type: 'board', tasks: [] };
+    var board1 = { id : 'board_1', name : 'Inbox', type: 'board', tasks: [], tag: "inbox"};
+    var board2 = { id : 'board_2', name : 'Second Backlog', type: 'board', tasks: [], tag: "secondBacklog"};
+    var board3 = { id : 'board_3', name : 'First Backlog', type: 'board', tasks: [], tag: "firstBacklog" };
+    var board4 = { id : 'board_4', name : 'In Progress', type: 'board', tasks: [], tag: "inProgress" };
+    var board5 = { id : 'board_5', name : 'Done', type: 'board', tasks: [], tag: "done" };
+
+    return [board1, board2, board3, board4, board5];
+}
+
+function loadTasks(){
+
+    var boards = returnBoards();
 
     for (var i = 0; i < tasksList.length; i++) { //assign task to a board
         if(tasksList[i].parent == "board_1")
-            board1.tasks.push(tasksList[i]);
+            boards[0].tasks.push(tasksList[i]);
         else if (tasksList[i].parent == "board_2")
-            board2.tasks.push(tasksList[i]);
+            boards[1].tasks.push(tasksList[i]);
         else if (tasksList[i].parent == "board_3")
-            board3.tasks.push(tasksList[i]);
+            boards[2].tasks.push(tasksList[i]);
         else if (tasksList[i].parent == "board_4")
-            board4.tasks.push(tasksList[i]);
+            boards[3].tasks.push(tasksList[i]);
         else if (tasksList[i].parent == "board_5")
-            board5.tasks.push(tasksList[i]);
+            boards[4].tasks.push(tasksList[i]);
     }
-
+    //for (var i = 0; i < tasksList.length; i++) { //assign task to a board
+    //    if(tasksList[i].parent == "board_1")
+    //        board1.tasks.push(tasksList[i]);
+    //    else if (tasksList[i].parent == "board_2")
+    //        board2.tasks.push(tasksList[i]);
+    //    else if (tasksList[i].parent == "board_3")
+    //        board3.tasks.push(tasksList[i]);
+    //    else if (tasksList[i].parent == "board_4")
+    //        board4.tasks.push(tasksList[i]);
+    //    else if (tasksList[i].parent == "board_5")
+    //        board5.tasks.push(tasksList[i]);
+    //}
+    //alert(boards[0]);
 
     return JSON.stringify([
-        board1, board2, board3, board4, board5
-        //{ id : 'board_1',
-        //name : 'Inbox',
-        //type: 'board',
-        //tasks: board1tasks
-        //}
-        //,
-        //{ id : 'board_2',
-        //name : 'Second Backlog',
-        //type: 'board',
-        //tasks: board2tasks
-        //}
-        //,
-        //{ id : 'board_3',
-        //    name : 'First Backlog',
-        //    type: 'board',
-        //    tasks: board3tasks
-        //}
-        //,
-        //{ id : 'board_4',
-        //    name : 'In Progress',
-        //    type: 'board',
-        //    tasks: board4tasks
-        //}
-        //,
-        //{ id : 'board_5',
-        //    name : 'Done',
-        //    type: 'board',
-        //    tasks: board5tasks
-        //}
+        boards[0], boards[1],boards[2],boards[3],boards[4]
     ]);
+}
+
+function defineTag(boardIndex) { // select correct board and choose correct tag for task
+    var boards = returnBoards();
+    var newTag;
+
+    for (var i = 0; i < boards.length; i++) {
+        if (boards[i].id.indexOf(boardIndex.toString()) != -1)
+            newTag = boards[i].tag;
+
+    }
+    return newTag;
 }
 
 function htmlDecode(input){

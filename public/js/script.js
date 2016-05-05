@@ -183,6 +183,26 @@ var MyApp = {
     var newBoardIndex = (ev.target.parentNode.id).match(/\d+/)[0];
     var deleteTaskIndex = item.getAttribute('data-index');
     var deleteBoardIndex = item.getAttribute('data-board-index');
+    //
+    //  document.getElementById('task-id').value = this.list[index.boardIndex].tasks[index.taskIndex].id;
+    //  document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc; //load fields to form
+    //  document.getElementById('add_task_due_date').value = this.list[index.boardIndex].tasks[index.taskIndex].due;
+    //  document.getElementById('add_task_priority').value = this.list[index.boardIndex].tasks[index.taskIndex].priority;
+    //  document.getElementById('add_task_project').value = this.list[index.boardIndex].tasks[index.taskIndex].project;
+    //  document.getElementById('add_task_tags').value = this.list[index.boardIndex].tasks[index.taskIndex].tags;
+    //
+    //  document.getElementById('task-title').innerHTML = "Edit Task";
+    //  document.getElementById('task-submit').innerHTML = "Edit Task";
+    //  document.getElementById('add_task_form').action = "/edit_task";
+    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].id);
+    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].desc);
+    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].due);
+    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].priority);
+    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].project);
+      this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags += " " + defineTag(newBoardIndex);
+      alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags);
+    //
+    //alert(newBoardIndex);
     dragData = this.list[deleteBoardIndex].tasks.slice(deleteTaskIndex, deleteTaskIndex + 1)
     this.list[deleteBoardIndex].tasks.splice(deleteTaskIndex, 1);
     this.addDragData(dragData, newBoardIndex);
