@@ -200,7 +200,8 @@ var MyApp = {
     //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].priority);
     //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].project);
       this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags += " " + defineTag(newBoardIndex);
-      alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags);
+      //alert(removeOldTag(deleteBoardIndex+1));
+    editTask(this.list[deleteBoardIndex].tasks[deleteTaskIndex]);
     //
     //alert(newBoardIndex);
     dragData = this.list[deleteBoardIndex].tasks.slice(deleteTaskIndex, deleteTaskIndex + 1)

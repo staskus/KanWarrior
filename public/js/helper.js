@@ -2,6 +2,10 @@ function createTask(){
     alert("Uzduotis bus sukurta.");
 }
 
+function editTask(task) {
+    post('/edit_task', {id: task.id, description: task.description, due:task.due, priority:task.priority, project:task.project, tags:task.tags});
+}
+
 function deleteTask(id) { // can't make ajax :/
 
 
@@ -59,8 +63,8 @@ function deleteTask(id) { // can't make ajax :/
 function returnBoards() {
 
     var board1 = { id : 'board_1', name : 'Inbox', type: 'board', tasks: [], tag: "inbox"};
-    var board2 = { id : 'board_2', name : 'Second Backlog', type: 'board', tasks: [], tag: "secondBacklog"};
-    var board3 = { id : 'board_3', name : 'First Backlog', type: 'board', tasks: [], tag: "firstBacklog" };
+    var board2 = { id : 'board_2', name : 'First Backlog', type: 'board', tasks: [], tag: "firstBacklog" };
+    var board3 = { id : 'board_3', name : 'Second Backlog', type: 'board', tasks: [], tag: "secondBacklog"};
     var board4 = { id : 'board_4', name : 'In Progress', type: 'board', tasks: [], tag: "inProgress" };
     var board5 = { id : 'board_5', name : 'Done', type: 'board', tasks: [], tag: "done" };
 
@@ -113,6 +117,18 @@ function defineTag(boardIndex) { // select correct board and choose correct tag 
     }
     return newTag;
 }
+
+//function removeOldTag(boardIndex) { // select correct board and choose correct tag for task
+//    var boards = returnBoards();
+//    var newTag;
+//
+//    for (var i = 0; i < boards.length; i++) {
+//        if (boards[i].id.indexOf(boardIndex.toString()) != -1)
+//            newTag = boards[i].tag;
+//
+//    }
+//    return newTag;
+//}
 
 function htmlDecode(input){
     var e = document.createElement('div');
