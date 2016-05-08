@@ -106,29 +106,31 @@ function loadTasks(){
     ]);
 }
 
-function defineTag(boardIndex) { // select correct board and choose correct tag for task
+function defineNewTag(boardIndex) { // select correct board and choose correct tag for task
     var boards = returnBoards();
     var newTag;
 
     for (var i = 0; i < boards.length; i++) {
         if (boards[i].id.indexOf(boardIndex.toString()) != -1)
             newTag = boards[i].tag;
-
     }
+
+    //alert("new:" + newTag);
     return newTag;
 }
 
-//function removeOldTag(boardIndex) { // select correct board and choose correct tag for task
-//    var boards = returnBoards();
-//    var newTag;
-//
-//    for (var i = 0; i < boards.length; i++) {
-//        if (boards[i].id.indexOf(boardIndex.toString()) != -1)
-//            newTag = boards[i].tag;
-//
-//    }
-//    return newTag;
-//}
+function defineOldTag(ind) { // for visual purposes remove old tag
+    var boards = returnBoards();
+    var oldTag;
+    var boardIndex = parseInt(ind) + parseInt(1);
+
+    for (var i = 0; i < boards.length; i++) {
+        if (boards[i].id.indexOf(boardIndex.toString()) != -1)
+            oldTag = boards[i].tag;
+    }
+    //alert("old:" + oldTag);
+    return oldTag;
+}
 
 function htmlDecode(input){
     var e = document.createElement('div');

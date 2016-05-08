@@ -183,7 +183,7 @@ var MyApp = {
     var newBoardIndex = (ev.target.parentNode.id).match(/\d+/)[0];
     var deleteTaskIndex = item.getAttribute('data-index');
     var deleteBoardIndex = item.getAttribute('data-board-index');
-    //
+    var taskTags = this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags;
     //  document.getElementById('task-id').value = this.list[index.boardIndex].tasks[index.taskIndex].id;
     //  document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc; //load fields to form
     //  document.getElementById('add_task_due_date').value = this.list[index.boardIndex].tasks[index.taskIndex].due;
@@ -199,8 +199,16 @@ var MyApp = {
     //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].due);
     //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].priority);
     //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].project);
-      this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags += " " + defineTag(newBoardIndex);
-      //alert(removeOldTag(deleteBoardIndex+1));
+    //  removeOldTag(deleteBoardIndex);
+      //"data-123".replace('data-','');
+    taskTags += " " + defineNewTag(newBoardIndex);
+      //alert("tagai pries replca : " + taskTags);
+      //alert("funkcija: " + defineOldTag(deleteBoardIndex));
+    taskTags = taskTags.replace(defineOldTag(deleteBoardIndex),'');
+      //var da = 1 + deleteBoardIndex;
+      //
+      //alert("tagai po replica : " + taskTags);
+      this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags = taskTags;
     editTask(this.list[deleteBoardIndex].tasks[deleteTaskIndex]);
     //
     //alert(newBoardIndex);
