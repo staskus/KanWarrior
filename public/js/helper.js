@@ -76,6 +76,11 @@ function loadTasks(){
     var boards = returnBoards();
 
     for (var i = 0; i < tasksList.length; i++) { //assign task to a board
+
+        tasksList[i].entry = formatDate(tasksList[i].entry);
+        if(tasksList[i].due != null)
+            tasksList[i].due = formatDate(tasksList[i].due);
+
         if(tasksList[i].parent == "board_1")
             boards[0].tasks.push(tasksList[i]);
         else if (tasksList[i].parent == "board_2")
@@ -87,19 +92,6 @@ function loadTasks(){
         else if (tasksList[i].parent == "board_5")
             boards[4].tasks.push(tasksList[i]);
     }
-    //for (var i = 0; i < tasksList.length; i++) { //assign task to a board
-    //    if(tasksList[i].parent == "board_1")
-    //        board1.tasks.push(tasksList[i]);
-    //    else if (tasksList[i].parent == "board_2")
-    //        board2.tasks.push(tasksList[i]);
-    //    else if (tasksList[i].parent == "board_3")
-    //        board3.tasks.push(tasksList[i]);
-    //    else if (tasksList[i].parent == "board_4")
-    //        board4.tasks.push(tasksList[i]);
-    //    else if (tasksList[i].parent == "board_5")
-    //        board5.tasks.push(tasksList[i]);
-    //}
-    //alert(boards[0]);
 
     return JSON.stringify([
         boards[0], boards[1],boards[2],boards[3],boards[4]
@@ -114,8 +106,6 @@ function defineNewTag(boardIndex) { // select correct board and choose correct t
         if (boards[i].id.indexOf(boardIndex.toString()) != -1)
             newTag = boards[i].tag;
     }
-
-    //alert("new:" + newTag);
     return newTag;
 }
 
@@ -128,7 +118,6 @@ function defineOldTag(ind) { // for visual purposes remove old tag
         if (boards[i].id.indexOf(boardIndex.toString()) != -1)
             oldTag = boards[i].tag;
     }
-    //alert("old:" + oldTag);
     return oldTag;
 }
 
@@ -161,3 +150,18 @@ function post(path, params, method) {
     document.body.appendChild(form);
     form.submit();
 }
+
+function formatDate(str) { // make date format: YYYY-MM-DD
+    var date;
+    date = str.substring(0,8);
+    date = date.insert(4, "-");
+    date = date.insert(7, "-");
+    return date;
+}
+
+String.prototype.insert = function (index, string) {
+    if (index > 0)
+        return this.substring(0, index) + string + this.substring(index, this.length);
+    else
+        return string + this;
+};

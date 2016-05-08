@@ -11,6 +11,13 @@
   </head>
   <body>
 
+    <div>
+        <ul>
+            <% for(var i=0; i<tags.length; i++) {%>
+            <li><%= tags[i] %></li>
+            <% } %>
+        </ul>
+    </div>
 
     <form action="/" method="get">
       <select name="projects">
@@ -52,6 +59,7 @@
 
               <label for="add_task_due_date">Due date</label>
               <input type="date" class="form-control" id="add_task_due_date" placeholder="" name="due">
+              <small>Date format: YYYY-MM-DD</small><br>
 
               <label for="add_task_priority">Priority</label>
               <select class="form-control" id="add_task_priority" name="priority">
@@ -82,11 +90,7 @@
     <script type="text/html" id="task_template">
       <div class="task-actions">
         <button class="btn btn-xs edit-task">Edit</button>
-          <!--<form id="delete_task_form" action="/delete_task" method="post">-->
-              <!--<input hidden value="">-->
-              <!--<button type="submit" class="btn btn-xs">Delete</button>-->
-          <button class="btn btn-xs delete-task">Delete</button>
-          <!--</form>-->
+        <button class="btn btn-xs delete-task">Delete</button>
       </div>
       <h4>::TaskDesc::</h4>
       <p>ID: ::TaskId::</p>
@@ -105,23 +109,6 @@
       </ul>
       <button class="btn btn-sm add-task">Add Task</button>
     </script>
-
-    <!--<%# for(var i=0; i<tasks.length; i++) {%>-->
-        <!--<div class="task">-->
-            <!--<div class="task-actions">-->
-                <!--<button class="btn btn-xs edit-task">Edit</button>-->
-                <!--<button class="btn btn-xs delete-task">Delete</button>-->
-            <!--</div>-->
-            <!--<h4 class="board-name">::TaskDesc::</h4>-->
-            <!--<p><%#= tasks[i].id %></p>-->
-            <!--<p>::TaskStatus::</p>-->
-            <!--<p>::TaskEntry::</p>-->
-            <!--<p>::TaskProject::</p>-->
-            <!--<p>::TaskDue::</p>-->
-            <!--<p>::TaskUrgency::</p>-->
-            <!--<p>::TaskPriority::</p>-->
-        <!--</div>-->
-    <!--<%# } %>-->
 
     <script src="js/script.js"></script>
     <script src="js/helper.js"></script>
