@@ -3,7 +3,7 @@ function createTask(){
 }
 
 function editTask(task) {
-    post('/edit_task', {id: task.id, description: task.description, due:task.due, priority:task.priority, project:task.project, tags:task.tags});
+    post('/edit_task', {id: task.id, description: task.desc, due:task.due, priority:task.priority, project:task.project, tags:task.tags});
 }
 
 function deleteTask(id) { // can't make ajax :/

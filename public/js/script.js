@@ -184,34 +184,12 @@ var MyApp = {
     var deleteTaskIndex = item.getAttribute('data-index');
     var deleteBoardIndex = item.getAttribute('data-board-index');
     var taskTags = this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags;
-    //  document.getElementById('task-id').value = this.list[index.boardIndex].tasks[index.taskIndex].id;
-    //  document.getElementById('add_task_desc').value = this.list[index.boardIndex].tasks[index.taskIndex].desc; //load fields to form
-    //  document.getElementById('add_task_due_date').value = this.list[index.boardIndex].tasks[index.taskIndex].due;
-    //  document.getElementById('add_task_priority').value = this.list[index.boardIndex].tasks[index.taskIndex].priority;
-    //  document.getElementById('add_task_project').value = this.list[index.boardIndex].tasks[index.taskIndex].project;
-    //  document.getElementById('add_task_tags').value = this.list[index.boardIndex].tasks[index.taskIndex].tags;
-    //
-    //  document.getElementById('task-title').innerHTML = "Edit Task";
-    //  document.getElementById('task-submit').innerHTML = "Edit Task";
-    //  document.getElementById('add_task_form').action = "/edit_task";
-    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].id);
-    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].desc);
-    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].due);
-    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].priority);
-    //  alert(this.list[deleteBoardIndex].tasks[deleteTaskIndex].project);
-    //  removeOldTag(deleteBoardIndex);
-      //"data-123".replace('data-','');
+
     taskTags += " " + defineNewTag(newBoardIndex);
-      //alert("tagai pries replca : " + taskTags);
-      //alert("funkcija: " + defineOldTag(deleteBoardIndex));
     taskTags = taskTags.replace(defineOldTag(deleteBoardIndex),'');
-      //var da = 1 + deleteBoardIndex;
-      //
-      //alert("tagai po replica : " + taskTags);
-      this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags = taskTags;
+    this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags = taskTags;
     editTask(this.list[deleteBoardIndex].tasks[deleteTaskIndex]);
-    //
-    //alert(newBoardIndex);
+
     dragData = this.list[deleteBoardIndex].tasks.slice(deleteTaskIndex, deleteTaskIndex + 1)
     this.list[deleteBoardIndex].tasks.splice(deleteTaskIndex, 1);
     this.addDragData(dragData, newBoardIndex);
@@ -238,7 +216,7 @@ var MyApp = {
 window.onload = function () {
   MyApp.init();
 
-  document.getElementById('add_new_board').addEventListener('click', MyApp.openBoardForm);
+  //document.getElementById('add_new_board').addEventListener('click', MyApp.openBoardForm);
 
   document.addEventListener('click', function(e) {
     var button = e.target;
