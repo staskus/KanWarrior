@@ -159,6 +159,17 @@ function formatDate(str) { // make date format: YYYY-MM-DD
     return date;
 }
 
+function removeBoardTag(tags) { // remove tag which is used to track the board (visual purpose only)
+    var newTags = [];
+    for (var i = 0; i < tags.length; i++) {
+        if (!((tags[i] == "inbox") || (tags[i] == "firstBacklog") || (tags[i] == "secondBacklog") || (tags[i] == "inProgress") || (tags[i] == "done"))) {
+            newTags.push(tags[i]);
+        }
+
+    }
+    return newTags;
+}
+
 String.prototype.insert = function (index, string) {
     if (index > 0)
         return this.substring(0, index) + string + this.substring(index, this.length);

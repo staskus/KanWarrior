@@ -12,22 +12,25 @@
   <body>
 
     <div>
-        <ul>
-            <% for(var i=0; i<tags.length; i++) {%>
-            <li><%= tags[i] %></li>
-            <% } %>
-        </ul>
-    </div>
+        <!--<form action="/" method="get">-->
 
-    <form action="/" method="get">
-      <select name="projects">
-          <% for(var i=0; i<projects.length; i++) {%>
-          <option><%= projects[i] %></option>
-          <% } %>
-      </select>
-      <br><br>
-      <input type="submit">
-    </form>
+            <!--<input type="submit" value="Submit">-->
+        <!--</form>-->
+
+        <form action="/" method="get">
+            <% for(var i=0; i<tags.length; i++) {%>
+            <input type="checkbox" name="tags" value="<%= tags[i] %>"><%= tags[i] %><br>
+            <% } %>
+
+          <select name="projects">
+              <% for(var i=0; i<projects.length; i++) {%>
+              <option><%= projects[i] %></option>
+              <% } %>
+          </select>
+          <br><br>
+          <input type="submit">
+        </form>
+    </div>
 
     <div class="container text-center">
       <!--<button class="btn btn-primary pull-right" id="add_new_board">Add Board</button>-->

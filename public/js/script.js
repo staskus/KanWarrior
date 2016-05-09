@@ -33,7 +33,8 @@ var MyApp = {
         temp = temp.replace( new RegExp( "::TaskDue::", "i" ), (this.due))
         temp = temp.replace( new RegExp( "::TaskUrgency::", "i" ), (this.urgency))
         temp = temp.replace( new RegExp( "::TaskPriority::", "i" ), (this.priority))
-        temp = temp.replace( new RegExp( "::TaskTags::", "i" ), (this.tags))
+        var realTags = removeBoardTag(this.tags);
+        temp = temp.replace( new RegExp( "::TaskTags::", "i" ), (realTags))
       }
       return temp;
     };
@@ -187,7 +188,10 @@ var MyApp = {
 
     taskTags += " " + defineNewTag(newBoardIndex);
     taskTags = taskTags.replace(defineOldTag(deleteBoardIndex),'');
+    taskTags = taskTags.replace("  ", " ");
+
     this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags = taskTags;
+      alert("|" + this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags + "|");
     editTask(this.list[deleteBoardIndex].tasks[deleteTaskIndex]);
 
     dragData = this.list[deleteBoardIndex].tasks.slice(deleteTaskIndex, deleteTaskIndex + 1)
