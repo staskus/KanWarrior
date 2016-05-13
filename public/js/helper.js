@@ -160,6 +160,8 @@ function formatDate(str) { // make date format: YYYY-MM-DD
 }
 
 function removeBoardTag(tags) { // remove tag which is used to track the board (visual purpose only)
+    if(typeof tags == 'string')
+        tags = tags.split(" ");
     var newTags = [];
     for (var i = 0; i < tags.length; i++) {
         if (!((tags[i] == "inbox") || (tags[i] == "firstBacklog") || (tags[i] == "secondBacklog") || (tags[i] == "inProgress") || (tags[i] == "done"))) {

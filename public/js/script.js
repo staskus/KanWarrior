@@ -114,6 +114,8 @@ var MyApp = {
     document.getElementById('add_task_due_date').value = this.list[index.boardIndex].tasks[index.taskIndex].due;
     document.getElementById('add_task_priority').value = this.list[index.boardIndex].tasks[index.taskIndex].priority;
     document.getElementById('add_task_project').value = this.list[index.boardIndex].tasks[index.taskIndex].project;
+    //var realTags = removeBoardTag(this.list[index.boardIndex].tasks[index.taskIndex].tags); //hide taskwarrior tags from editing (incomplete)
+    //document.getElementById('add_task_tags').value = realTags.join(' ');
     document.getElementById('add_task_tags').value = this.list[index.boardIndex].tasks[index.taskIndex].tags;
 
     document.getElementById('task-title').innerHTML = "Edit Task";
@@ -191,7 +193,7 @@ var MyApp = {
     taskTags = taskTags.replace("  ", " ");
 
     this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags = taskTags;
-      alert("|" + this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags + "|");
+      //alert("|" + this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags + "|");
     editTask(this.list[deleteBoardIndex].tasks[deleteTaskIndex]);
 
     dragData = this.list[deleteBoardIndex].tasks.slice(deleteTaskIndex, deleteTaskIndex + 1)
