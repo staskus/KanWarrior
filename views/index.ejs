@@ -10,84 +10,102 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
   </head>
   <body>
-
-    <div>
-        <!--<form action="/" method="get">-->
-
-            <!--<input type="submit" value="Submit">-->
-        <!--</form>-->
-
-        <form action="/" method="get">
-            <% for(var i=0; i<tags.length; i++) {%>
-            <input type="checkbox" name="tags" value="<%= tags[i] %>"><%= tags[i] %><br>
-            <% } %>
-
-          <select name="projects">
-              <% for(var i=0; i<projects.length; i++) {%>
-              <option><%= projects[i] %></option>
-              <% } %>
-          </select>
-          <br><br>
-          <input type="submit">
-        </form>
-    </div>
-
-    <div class="container text-center">
-      <!--<button class="btn btn-primary pull-right" id="add_new_board">Add Board</button>-->
-      <h1>Welcome to my Task Management App</h1>
-      <div class="wrapper row no-margin" id="boards_container">
-      </div>
-    </div>
-
-    <div class="overlay">
-      <div class="popup">
-        <button id="close_popup" class="btn btn-xs">x</button>
-
-        <h2 class="add-board-form-title inactive">Add New Board</h2>
-        <form id="add_board_form" class="inactive">
-          <div class="form-group">
-            <label for="add_board_name">Add Board Name</label>
-            <input type="text" class="form-control" id="add_board_name" placeholder="Board Name">
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid header">
+              <div class="head-row">
+                  <div class="col-md-2">
+                      <h1 class="title">KanWarrior</h1>
+                  </div>
+                  <div class="col-md-10">
+                      <form class="form-inline filter-form" action="/" method="get">
+                          <button type="button" class="btn btn-primary add-task">Add Task</button>
+                          <input type="submit" class="btn btn-primary" value="Filter Tasks">
+                          <div class="form-group">
+                              <select name="projects">
+                                  <% for(var i=0; i<projects.length; i++) {%>
+                                  <option><%= projects[i] %></option>
+                                  <% } %>
+                              </select>
+                          </div>
+                          <% for(var i=0; i<tags.length; i++) {%>
+                          <div class="checkbox tag-checkbox">
+                              <label>
+                                  <input type="checkbox" class="checkbox-input" name="tags" value="<%= tags[i] %>"><%= tags[i] %><br>
+                              </label>
+                          </div>
+                          <% } %>
+                      </form>
+                  </div>
+              </div>
           </div>
-          <button type="submit" class="btn btn-primary">Add Board</button>
-        </form>
+      </nav>
 
-          <!--//&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+      <div class="container main center">
+        <div class="centerBlock">
+            <!--<div class="filter-forms">-->
+                <!--<form action="/sync" method="post">-->
+                    <!--<input type="submit" value="Synchronize">-->
+                <!--</form>-->
 
-        <h2 id="task-title" class="add-task-form-title inactive">Add New Task</h2>
-        <form id="add_task_form" class="inactive" action="/new_task" method="post">
-          <div class="form-group">
-              <label for="add_task_desc">Task Description</label>
-              <textarea class="form-control" id="add_task_desc" placeholder="Task Description" name="description" required></textarea>
+             <!--&ndash;&gt;-->
+            <!--</div>-->
 
-              <label for="add_task_due_date">Due date</label>
-              <input type="date" class="form-control" id="add_task_due_date" placeholder="" name="due">
-              <small>Date format: YYYY-MM-DD</small><br>
 
-              <label for="add_task_priority">Priority</label>
-              <select class="form-control" id="add_task_priority" name="priority">
-                  <option></option>
-                  <option>H</option>
-                  <option>M</option>
-                  <option>L</option>
-              </select>
-              <br>
+          <!--<button class="btn btn-primary pull-right" id="add_new_board">Add Board</button>-->
+            <!--<button class="btn btn-primary add-task">Add Task</button>-->
+            <div class="wrapper row no-margin" id="boards_container"></div>
 
-              <label for="add_task_project">Project</label>
-              <input type="text" class="form-control" id="add_task_project" placeholder="" name="project">
+            <div class="overlay">
+              <div class="popup">
+                <button id="close_popup" class="btn btn-xs">x</button>
 
-              <label for="add_task_tags">Tags</label>
-              <input type="text" class="form-control" id="add_task_tags" placeholder="" name="tags">
-              <small>Add space between multiple tags</small>
-          </div>
-          <input type="hidden" id="task-id" name="id" />
-          <input type="hidden" id="parent_board" />
-          <input type="hidden" id="edit_task" value="false" />
-          <input type="hidden" id="edit_task_index" />
-          <button id="task-submit" type="submit" class="btn btn-primary">Add Task</button>
-        </form>
+                <h2 class="add-board-form-title inactive">Add New Board</h2>
+                <form id="add_board_form" class="inactive">
+                  <div class="form-group">
+                    <label for="add_board_name">Add Board Name</label>
+                    <input type="text" class="form-control" id="add_board_name" placeholder="Board Name">
+                  </div>
+                  <button type="submit" class="btn btn-primary">Add Board</button>
+                </form>
 
-      </div>
+                  <!--//&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+
+                <h2 id="task-title" class="add-task-form-title inactive">Add New Task</h2>
+                <form id="add_task_form" class="inactive" action="/new_task" method="post">
+                  <div class="form-group">
+                      <label for="add_task_desc">Task Description</label>
+                      <textarea class="form-control" id="add_task_desc" placeholder="Task Description" name="description" required></textarea>
+
+                      <label for="add_task_due_date">Due date</label>
+                      <input type="date" class="form-control" id="add_task_due_date" placeholder="" name="due">
+                      <small>Date format: YYYY-MM-DD</small><br>
+
+                      <label for="add_task_priority">Priority</label>
+                      <select class="form-control" id="add_task_priority" name="priority">
+                          <option></option>
+                          <option>H</option>
+                          <option>M</option>
+                          <option>L</option>
+                      </select>
+                      <br>
+
+                      <label for="add_task_project">Project</label>
+                      <input type="text" class="form-control" id="add_task_project" placeholder="" name="project">
+
+                      <label for="add_task_tags">Tags</label>
+                      <input type="text" class="form-control" id="add_task_tags" placeholder="" name="tags">
+                      <small>Add space between multiple tags</small>
+                  </div>
+                  <input type="hidden" id="task-id" name="id" />
+                  <input type="hidden" id="parent_board" />
+                  <input type="hidden" id="edit_task" value="false" />
+                  <input type="hidden" id="edit_task_index" />
+                  <button id="task-submit" type="submit" class="btn btn-primary">Add Task</button>
+                </form>
+
+              </div>
+            </div>
+        </div>
     </div>
 
     <script type="text/html" id="task_template">
@@ -95,24 +113,24 @@
         <button class="btn btn-xs edit-task">Edit</button>
         <button class="btn btn-xs delete-task">Delete</button>
       </div>
-      <h4>::TaskDesc::</h4>
-      <p>ID: ::TaskId::</p>
-      <p>Status: ::TaskStatus::</p>
-      <p>Entry: ::TaskEntry::</p>
-      <p>Project: ::TaskProject::</p>
-      <p>Due: ::TaskDue::</p>
-      <p>Urgency: ::TaskUrgency::</p>
-      <p>Priority: ::TaskPriority::</p>
-      <p>Tags: ::TaskTags::</p>
+      <div class="task-body">
+          <h4>::TaskDesc::</h4>
+          <p>ID: ::TaskId::</p>
+          <p>Status: ::TaskStatus::</p>
+          <p>Entry: ::TaskEntry::</p>
+          <p>Project: ::TaskProject::</p>
+          <p>Due: ::TaskDue::</p>
+          <p>Urgency: ::TaskUrgency::</p>
+          <p>Priority: ::TaskPriority::</p>
+          <p>Tags: ::TaskTags::</p>
+      </div>
     </script>
 
     <script type="text/html" id="board_template">
       <h3 class="board-title">::BoardName::</h3>
       <ul class="task-items" ondrop="MyApp.drop(event)" ondragover="MyApp.allowDrop(event)">
       </ul>
-      <button class="btn btn-sm add-task">Add Task</button>
     </script>
-
     <script src="js/script.js"></script>
     <script src="js/helper.js"></script>
     <script type="text/javascript">
