@@ -25,6 +25,19 @@ var MyApp = {
       }
       else {
         temp = document.getElementById("task_template").innerHTML
+        if(this.status == "completed") {
+            temp = '<div class="task-body"></div><h4>::TaskDesc::</h4><p>ID: ::TaskId::</p><p>Status: ::TaskStatus::</p><p>Entry: ::TaskEntry::</p><p>Project: ::TaskProject::</p><p>Tags: ::TaskTags::</p>';
+            //    <h4>::TaskDesc::</h4>
+            //<p>ID: ::TaskId::</p>
+            //<p>Status: ::TaskStatus::</p>
+            //<p>Entry: ::TaskEntry::</p>
+            //<p>Project: ::TaskProject::</p>
+            //<p>Due: ::TaskDue::</p>
+            //<p>Urgency: ::TaskUrgency::</p>
+            //<p>Priority: ::TaskPriority::</p>
+            //<p>Tags: ::TaskTags::</p>
+            //alert(temp);
+        }
         temp = temp.replace( new RegExp( "::TaskId::", "i" ), (this.id))
         temp = temp.replace( new RegExp( "::TaskDesc::", "i" ), (this.desc))
         temp = temp.replace( new RegExp( "::TaskStatus::", "i" ), (this.status))
@@ -57,6 +70,7 @@ var MyApp = {
           id : self.id,
           desc : self.desc,
           due : self.due,
+          status: self.status,
           priority : self.priority,
           project : self.project,
           tags : tagsStr,
@@ -167,7 +181,7 @@ var MyApp = {
   addDragData : function(dragData, parentIndex) {
     myArray = MyApp.list[parentIndex-1].tasks;
     myArray[myArray.length] = {
-      name : dragData[0].name,
+      //name : dragData[0].name,
       desc : dragData[0].desc,
       type : 'task',
       parent : 'board_' + parentIndex
@@ -186,20 +200,25 @@ var MyApp = {
     var newBoardIndex = (ev.target.parentNode.id).match(/\d+/)[0];
     var deleteTaskIndex = item.getAttribute('data-index');
     var deleteBoardIndex = item.getAttribute('data-board-index');
-    var taskTags = this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags;
+    var task = this.list[deleteBoardIndex].tasks[deleteTaskIndex];
+    var taskTags = task.tags;
 
     taskTags += " " + defineNewTag(newBoardIndex);
     taskTags = taskTags.replace(defineOldTag(deleteBoardIndex),'');
     taskTags = taskTags.replace("  ", " ");
+    task.tags = taskTags;
 
-    this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags = taskTags;
-      //alert("|" + this.list[deleteBoardIndex].tasks[deleteTaskIndex].tags + "|");
-    editTask(this.list[deleteBoardIndex].tasks[deleteTaskIndex]);
-
-    dragData = this.list[deleteBoardIndex].tasks.slice(deleteTaskIndex, deleteTaskIndex + 1)
-    this.list[deleteBoardIndex].tasks.splice(deleteTaskIndex, 1);
-    this.addDragData(dragData, newBoardIndex);
-    this.saveData();
+    //*** some kind of bug with due date, no idea why so here is a "fix"
+    if (task.due!="") {
+        var res = task.due.substring(9, 10);
+        var newDue = task.due.substring(0, 9);
+        newDue = newDue.concat((parseInt(res) + 1).toString());
+        task.due = newDue;
+    }
+    //***
+    //  alert(task.status);
+    //task = changeStatus(task, "completed", "pending");
+    editTask(task);
   },
   init : function () {
 
@@ -209,7 +228,7 @@ var MyApp = {
       //alert("nzn " + board.id);
       this.addItem(board);
       for(j in board.tasks) {
-        var task = board.tasks[j];
+        task = board.tasks[j];
         //alert("nzn " + task.id);
         this.addItem(task);
       }

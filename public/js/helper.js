@@ -3,7 +3,7 @@ function createTask(){
 }
 
 function editTask(task) {
-    post('/edit_task', {id: task.id, description: task.desc, due:task.due, priority:task.priority, project:task.project, tags:task.tags});
+    post('/edit_task', {id: task.id, description: task.desc, due: task.due, priority: task.priority, project: task.project, tags: task.tags,  status: task.status});
 }
 
 function deleteTask(id) { // can't make ajax :/
@@ -119,6 +119,13 @@ function defineOldTag(ind) { // for visual purposes remove old tag
             oldTag = boards[i].tag;
     }
     return oldTag;
+}
+
+function changeStatus(task, status, newStatus) {
+    if(task.status == status){
+        task.status = newStatus;
+    }
+    return task;
 }
 
 function htmlDecode(input){
