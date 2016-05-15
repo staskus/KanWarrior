@@ -11,6 +11,7 @@ var MyApp = {
     this.urgency = itemData.urgency || '';
     this.priority = itemData.priority || '';
     this.tags = itemData.tags || '';
+    this.start = itemData.start || '';
 
     this.name = itemData.name || '';
     this.type = itemData.type || '';
@@ -71,6 +72,7 @@ var MyApp = {
           desc : self.desc,
           due : self.due,
           status: self.status,
+          start: self.start,
           priority : self.priority,
           project : self.project,
           tags : tagsStr,
@@ -208,6 +210,9 @@ var MyApp = {
     taskTags = taskTags.replace("  ", " ");
     task.tags = taskTags;
 
+    if (taskTags.indexOf("inProgress") == -1) // special mark to stop active task
+        task.start = 'dragged';
+
     //*** some kind of bug with due date, no idea why so here is a "fix"
     if (task.due!="") {
         var res = task.due.substring(9, 10);
@@ -216,7 +221,7 @@ var MyApp = {
         task.due = newDue;
     }
     //***
-    //  alert(task.status);
+    //  alert(task.tags);
     //task = changeStatus(task, "completed", "pending");
     editTask(task);
   },

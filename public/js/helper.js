@@ -3,7 +3,7 @@ function createTask(){
 }
 
 function editTask(task) {
-    post('/edit_task', {id: task.id, description: task.desc, due: task.due, priority: task.priority, project: task.project, tags: task.tags,  status: task.status});
+    post('/edit_task', {id: task.id, description: task.desc, due: task.due, priority: task.priority, project: task.project, tags: task.tags,  status: task.status, start: task.start});
 }
 
 function deleteTask(id) { // can't make ajax :/
@@ -121,12 +121,13 @@ function defineOldTag(ind) { // for visual purposes remove old tag
     return oldTag;
 }
 
-function changeStatus(task, status, newStatus) {
-    if(task.status == status){
-        task.status = newStatus;
-    }
-    return task;
-}
+//function changeStatus(task, status, newStatus) {
+//    if(task.status == status){
+//        task.status = newStatus;
+//    }
+//    return task;
+//}
+
 
 function htmlDecode(input){
     var e = document.createElement('div');
@@ -157,6 +158,24 @@ function post(path, params, method) {
     document.body.appendChild(form);
     form.submit();
 }
+
+//function getCurrentDate() {
+//    var today = new Date();
+//    var dd = today.getDate();
+//    var mm = today.getMonth()+1; //January is 0!
+//    var yyyy = today.getFullYear();
+//
+//    if(dd<10) {
+//        dd='0'+dd
+//    }
+//
+//    if(mm<10) {
+//        mm='0'+mm
+//    }
+//
+//    today = yyyy+mm+dd;
+//    return formatDate(today);
+//}
 
 function formatDate(str) { // make date format: YYYY-MM-DD
     var date;
