@@ -176,9 +176,9 @@ var MyApp = {
     document.getElementById('add_task_form').className = "inactive";
   },
   saveData : function() {
-    if(window.localStorage) {
-      window.localStorage.myData = JSON.stringify(this.list);
-    }
+    //if(window.localStorage) {
+    //  window.localStorage.myData = JSON.stringify(this.list);
+    //}
   },
   addDragData : function(dragData, parentIndex) {
     myArray = MyApp.list[parentIndex-1].tasks;
@@ -210,8 +210,10 @@ var MyApp = {
     taskTags = taskTags.replace("  ", " ");
     task.tags = taskTags;
 
-    if (taskTags.indexOf("inProgress") == -1) // special mark to stop active task
-        task.start = 'dragged';
+    if (defineOldTag(deleteBoardIndex) == "inProgress") // special mark to stop active task
+        task.start = 'dragStop';
+    else if  (taskTags.indexOf("inProgress") != -1)
+        task.start = 'dragStart';
 
     //*** some kind of bug with due date, no idea why so here is a "fix"
     if (task.due!="") {
@@ -220,9 +222,7 @@ var MyApp = {
         newDue = newDue.concat((parseInt(res) + 1).toString());
         task.due = newDue;
     }
-    //***
-    //  alert(task.tags);
-    //task = changeStatus(task, "completed", "pending");
+
     editTask(task);
   },
   init : function () {
