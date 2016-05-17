@@ -17,7 +17,10 @@
                       <h1 class="title">KanWarrior</h1>
                   </div>
                   <div class="col-md-10">
-                      <form class="form-inline filter-form" action="/" method="get">
+                      <form action="/sync" method="post" class="navbar-form">
+                          <input  type="submit" class="btn btn-primary" formaction="/sync" value="Synchronize">
+                      </form>
+                      <form class="form-inline filter-form navbar-form" action="/" method="get">
                           <button type="button" class="btn btn-primary add-task">Add Task</button>
                           <input type="submit" class="btn btn-primary" value="Filter Tasks">
                           <div class="form-group">
@@ -42,16 +45,19 @@
 
       <div class="container main center">
         <div class="centerBlock">
-            <!--<div class="filter-forms">-->
-                <!--<form action="/sync" method="post">-->
-                    <!--<input type="submit" value="Synchronize">-->
-                <!--</form>-->
+            <%if (calendars != null) { %>
+            <div id="calDAV" class="alert alert-success" role="alert">
+                    <% for(i=0; i<calendars.length; i++) {%>
+                        <strong><%= calendars[i].name %>:</strong> <%= calendars[i].description %> ;
+                    <% } %>
+                <button type="button" class="hide-alert btn btn-danger btn-xs" onclick="hide()">Close</button>
+            </div>
+            <% } %>
 
-             <!--&ndash;&gt;-->
-            <!--</div>-->
 
 
-          <!--<button class="btn btn-primary pull-right" id="add_new_board">Add Board</button>-->
+
+            <!--<button class="btn btn-primary pull-right" id="add_new_board">Add Board</button>-->
             <!--<button class="btn btn-primary add-task">Add Task</button>-->
             <div class="wrapper row no-margin" id="boards_container"></div>
 

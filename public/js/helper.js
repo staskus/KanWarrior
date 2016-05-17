@@ -204,3 +204,8 @@ String.prototype.insert = function (index, string) {
     else
         return string + this;
 };
+
+function hide() {
+    document.getElementById("calDAV").classList.add('hidden');
+    calendars = null;
+}

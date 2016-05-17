@@ -15,6 +15,13 @@ form {
   /*padding-top: 15px;*/
 }
 
+
+.hide-alert {
+    float: right;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
 .task-body {
     word-wrap: break-word;
 }
@@ -50,12 +57,17 @@ form {
 }
 
 .main {
-    margin-top: 150px;
+    margin-top: 90px;
 }
 
 .filter-form{
-    padding-top: 7px;
-    padding-left: 25px;
+    /*padding-top: 7px;*/
+    /*padding-left: 25px;*/
+}
+
+.navbar-form {
+    padding: 2px;
+    float: left
 }
 
 .head-row {

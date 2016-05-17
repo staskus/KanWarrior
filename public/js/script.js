@@ -215,6 +215,8 @@ var MyApp = {
     else if  (taskTags.indexOf("inProgress") != -1)
         task.start = 'dragStart';
 
+    //alert(task.start + " old: " + defineOldTag(deleteBoardIndex) + ", tags: " + task.tags);
+      
     //*** some kind of bug with due date, no idea why so here is a "fix"
     if (task.due!="") {
         var res = task.due.substring(9, 10);
