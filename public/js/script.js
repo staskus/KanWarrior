@@ -205,7 +205,7 @@ var MyApp = {
   drop : function(ev) {
     ev.preventDefault();
     ev.target.appendChild(item);
-    var newBoardIndex = (ev.target.parentNode.id).match(/\d+/)[0];
+    var newBoardIndex = (ev.target.parentNode.parentNode.parentNode.id).match(/\d+/)[0]; // as much parent nodes as deep from script the item is
     var deleteTaskIndex = item.getAttribute('data-index');
     var deleteBoardIndex = item.getAttribute('data-board-index');
     var task = this.list[deleteBoardIndex].tasks[deleteTaskIndex];
@@ -220,8 +220,6 @@ var MyApp = {
         task.start = 'dragStop';
     else if  (taskTags.indexOf("inProgress") != -1)
         task.start = 'dragStart';
-
-    //alert(task.start + " old: " + defineOldTag(deleteBoardIndex) + ", tags: " + task.tags);
 
     //*** some kind of bug with due date, no idea why so here is a "fix"
     if (task.due!="") {
