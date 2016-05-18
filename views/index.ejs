@@ -117,10 +117,10 @@
 
       <script type="text/html" id="task_template">
       <div class="panel panel-default">
-          <div class="panel-heading">
-              <h3 class="panel-title task-title"><b style="float: left">::TaskId::. </b>::TaskDesc::<span class="caret" style="float: right" onclick="toggleExtraInfo('::block-id::')"></span></h3>
+          <div class="panel-heading" onclick="toggleExtraInfo('::block-id::')">
+              <h3 class="panel-title task-title"><b style="float: left">::TaskId::. </b>::TaskDesc::</h3>
           </div>
-          <div class="panel-body">
+          <div class="panel-body ::block-id::">
               <!--ID: ::TaskId::-->
               <!--<div>Created: ::TaskEntry::</div>-->
               <div>Urgency: ::TaskUrgency::</div>
@@ -161,12 +161,24 @@
           <!--<button class="btn btn-xs delete-task">Delete</button>-->
       <!--</div>-->
     <!--</script>-->
+      <script type="text/html" id="board_template">
+      <div class="panel panel-primary">
+          <div class="panel-heading">
+              <h3 class="panel-title board-title">::BoardName::</h3>
+          </div>
+          <div class="panel-body">
+              <ul class="task-items" ondrop="MyApp.drop(event)" ondragover="MyApp.allowDrop(event)">
+              </ul>
+          </div>
+      </div>
+      </script>
 
-    <script type="text/html" id="board_template">
-      <h3 class="board-title">::BoardName::</h3>
-      <ul class="task-items" ondrop="MyApp.drop(event)" ondragover="MyApp.allowDrop(event)">
-      </ul>
-    </script>
+    <!--<script type="text/html" id="board_template">-->
+      <!--<h3 class="board-title">::BoardName::</h3>-->
+      <!--<ul class="task-items" ondrop="MyApp.drop(event)" ondragover="MyApp.allowDrop(event)">-->
+      <!--</ul>-->
+    <!--</script>-->
+
     <script src="js/script.js"></script>
     <script src="js/helper.js"></script>
     <script type="text/javascript">

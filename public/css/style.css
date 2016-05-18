@@ -87,24 +87,39 @@ form {
   /*height: 1000px;*/
   /*overflow-x: scroll;*/
 /*}*/
+
+.panel-primary {
+    min-height: 700px;
+    margin-bottom: 0px;
+}
+
+.panel-body {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
 .board-wrap {
   float: left;
-  width: 250px;
+  width: 270px;
   margin-right: 20px;
-  padding: 9px 14px;
-  margin-bottom: 14px;
-  background-color: #f7f7f9;
+  /*padding: 9px 14px;*/
+  /*margin-bottom: 14px;*/
+  /*background-color: #f7f7f9;*/
   border: 1px solid #e1e1e8;
   border-radius: 4px;
-  min-height: 500px;
+  min-height: 650px;
 }
+
 .task-items {
     min-height: 400px;
-  padding: 20px 0;
+    /*width: 260px;*/
+    padding: 1px;
+  /*padding: 20px 0;*/
   text-align: left;
   list-style: none;
 }
 .board-title {
+    text-align: center;
   text-transform: capitalize;
   margin: 0 0 15px;
   padding: 10px;
@@ -116,13 +131,13 @@ form {
   background-color: #fff;
   border: 1px solid #aaa;
   border-radius: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 7px;
 }
 .task:last-child {
   margin-bottom: 0;
 }
 .task-actions {
-    width: 101%;
+    width: 100%;
     /*background-color: red;*/
   /*position: absolute;*/
   /*top: 4px;*/
@@ -188,5 +203,5 @@ form {
   margin-top: 0;
 }
 .container {
-  width: 1500px !important;
+  width: 1600px !important;
 }

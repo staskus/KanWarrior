@@ -206,20 +206,20 @@ function hide() {
     calendars = null;
 }
 
-function toggleExtraInfo(id, id2) {
+function toggleExtraInfo(id) {
 
     id = id.substring(9, id.length);
-    id = id - 1;
 
-    var div = document.getElementsByClassName('extra-info');
-    var div2 = document.getElementsByClassName('panel-body');
+    //alert(id);
+    var div = document.getElementsByClassName('extra-info block-id:' + id);
+    var div2 = document.getElementsByClassName('panel-body block-id:' + id);
 
-    if (div[id].style.display !== 'none') {
-        div[id].style.display = 'none';
-        div2[id].style.display = 'block';
+    if (div[0].style.display !== 'none') {
+        div[0].style.display = 'none';
+        div2[0].style.display = 'block';
     }
     else {
-        div[id].style.display = 'block';
-        div2[id].style.display = 'none';
+        div[0].style.display = 'block';
+        div2[0].style.display = 'none';
     }
 }
