@@ -21,34 +21,39 @@ var MyApp = {
     this.template = function() {
       var temp;
       if(this.type == "board") {
-        temp = document.getElementById("board_template").innerHTML
-        temp = temp.replace( new RegExp( "::BoardName::", "i" ), (this.name))
+        temp = document.getElementById("board_template").innerHTML;
+        temp = temp.replace( new RegExp( "::BoardName::", "i" ), (this.name));
       }
       else {
-        temp = document.getElementById("task_template").innerHTML
+        temp = document.getElementById("task_template").innerHTML;
         if(this.status == "completed") {
-            temp = '<div class="task-body"></div><h4>::TaskDesc::</h4><p>ID: ::TaskId::</p><p>Status: ::TaskStatus::</p><p>Entry: ::TaskEntry::</p><p>Project: ::TaskProject::</p><p>Tags: ::TaskTags::</p>';
-            //    <h4>::TaskDesc::</h4>
-            //<p>ID: ::TaskId::</p>
-            //<p>Status: ::TaskStatus::</p>
-            //<p>Entry: ::TaskEntry::</p>
-            //<p>Project: ::TaskProject::</p>
-            //<p>Due: ::TaskDue::</p>
-            //<p>Urgency: ::TaskUrgency::</p>
-            //<p>Priority: ::TaskPriority::</p>
-            //<p>Tags: ::TaskTags::</p>
-            //alert(temp);
+            temp =
+            `<div class="panel panel-default">
+              <div class="panel-heading">
+                  <h3 class="panel-title task-title"><b style="float: left">::TaskId::. </b>::TaskDesc::</h3>
+              </div>
+              <!--<div class="panel-body">-->
+                  <!--<div>Urgency: ::TaskUrgency::</div>-->
+              <!--</div>-->
+              <div class="btn-group task-actions" role="group" aria-label="...">
+                  <button class="btn btn-default edit-task" disabled="disabled">Edit</button>
+                  <button class="btn btn-default delete-task" disabled="disabled">Delete</button>
+              </div>
+            </div>`;
         }
-        temp = temp.replace( new RegExp( "::TaskId::", "i" ), (this.id))
-        temp = temp.replace( new RegExp( "::TaskDesc::", "i" ), (this.desc))
-        temp = temp.replace( new RegExp( "::TaskStatus::", "i" ), (this.status))
-        temp = temp.replace( new RegExp( "::TaskEntry::", "i" ), (this.entry))
-        temp = temp.replace( new RegExp( "::TaskProject::", "i" ), (this.project))
-        temp = temp.replace( new RegExp( "::TaskDue::", "i" ), (this.due))
-        temp = temp.replace( new RegExp( "::TaskUrgency::", "i" ), (this.urgency))
-        temp = temp.replace( new RegExp( "::TaskPriority::", "i" ), (this.priority))
+
+        //alert(temp);
+        temp = temp.replace( new RegExp( "::block-id::", "g" ), ('block-id:' + this.id));
+        temp = temp.replace( new RegExp( "::TaskId::", "g" ), (this.id));
+        temp = temp.replace( new RegExp( "::TaskDesc::", "g" ), (this.desc));
+        temp = temp.replace( new RegExp( "::TaskStatus::", "g" ), (this.status))
+        temp = temp.replace( new RegExp( "::TaskEntry::", "g" ), (this.entry))
+        temp = temp.replace( new RegExp( "::TaskProject::", "g" ), (this.project))
+        temp = temp.replace( new RegExp( "::TaskDue::", "g" ), (this.due))
+        temp = temp.replace( new RegExp( "::TaskUrgency::", "g" ), (this.urgency))
+        temp = temp.replace( new RegExp( "::TaskPriority::", "g" ), (this.priority))
         var realTags = removeBoardTag(this.tags);
-        temp = temp.replace( new RegExp( "::TaskTags::", "i" ), (realTags))
+        temp = temp.replace( new RegExp( "::TaskTags::", "g" ), (realTags))
       }
       return temp;
     };
@@ -93,7 +98,7 @@ var MyApp = {
     }
     else {
       var el = document.createElement('li');
-      el.className = "task";
+      //el.className = "task";
       el.setAttribute('data-index',  (this.list[myItem.parentIndex -1].tasks.length));// ???wtf is this
       el.setAttribute('data-board-index',  myItem.parentIndex - 1);                   //  ??and this
       el.setAttribute('draggable',  'true');
@@ -105,10 +110,11 @@ var MyApp = {
     this.saveData();
   },
   deleteItem : function(event) {
-    var element = event.target.parentNode.parentNode;
+    var element = event.target.parentNode.parentNode.parentNode;
     var taskIndex = element.getAttribute('data-index');
     var boardIndex = element.getAttribute('data-board-index');
-    deleteTask(parseInt(taskIndex));
+    var task = this.list[boardIndex].tasks[taskIndex];
+    deleteTask(parseInt(task.id));
     element.remove();
     MyApp.list[boardIndex].tasks.splice(taskIndex, 1);
     this.saveData();
@@ -216,7 +222,7 @@ var MyApp = {
         task.start = 'dragStart';
 
     //alert(task.start + " old: " + defineOldTag(deleteBoardIndex) + ", tags: " + task.tags);
-      
+
     //*** some kind of bug with due date, no idea why so here is a "fix"
     if (task.due!="") {
         var res = task.due.substring(9, 10);
@@ -232,11 +238,9 @@ var MyApp = {
     var i, j, board, task, myData =  JSON.parse(loadTasks());
     for(i in myData) {
       board = myData[i];
-      //alert("nzn " + board.id);
       this.addItem(board);
       for(j in board.tasks) {
         task = board.tasks[j];
-        //alert("nzn " + task.id);
         this.addItem(task);
       }
     }
@@ -257,12 +261,15 @@ window.onload = function () {
     }
     if(button.classList.contains("delete-task")) {
       if (confirm('Are you sure ?'))
+      {
+        alert(e);
         MyApp.deleteItem(e);
+        }
     }
     if(button.classList.contains("edit-task")) {
       var index ={
-        taskIndex : button.parentNode.parentNode.getAttribute('data-index'),
-        boardIndex : button.parentNode.parentNode.getAttribute('data-board-index')
+        taskIndex : button.parentNode.parentNode.parentNode.getAttribute('data-index'),
+        boardIndex : button.parentNode.parentNode.parentNode.getAttribute('data-board-index')
       }
       MyApp.openTaskForm(e, index);
     }

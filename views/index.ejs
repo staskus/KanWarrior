@@ -50,7 +50,8 @@
                     <% for(i=0; i<calendars.length; i++) {%>
                         <strong><%= calendars[i].name %>:</strong> <%= calendars[i].description %> ;
                     <% } %>
-                <button type="button" class="hide-alert btn btn-danger btn-xs" onclick="hide()">Close</button>
+                <!--<button type="button" class="hide-alert btn btn-danger btn-xs" onclick="hide()">Close</button>-->
+                <button type="button"  onclick="hide()" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <% } %>
 
@@ -114,23 +115,52 @@
         </div>
     </div>
 
-    <script type="text/html" id="task_template">
-      <div class="task-actions">
-        <button class="btn btn-xs edit-task">Edit</button>
-        <button class="btn btn-xs delete-task">Delete</button>
+      <script type="text/html" id="task_template">
+      <div class="panel panel-default">
+          <div class="panel-heading">
+              <h3 class="panel-title task-title"><b style="float: left">::TaskId::. </b>::TaskDesc::<span class="caret" style="float: right" onclick="toggleExtraInfo('::block-id::')"></span></h3>
+          </div>
+          <div class="panel-body">
+              <!--ID: ::TaskId::-->
+              <!--<div>Created: ::TaskEntry::</div>-->
+              <div>Urgency: ::TaskUrgency::</div>
+          </div>
+          <div class="extra-info ::block-id::">
+              <ul class="list-group">
+                  <li class="list-group-item">Urgency: ::TaskUrgency::</li>
+                  <li class="list-group-item">Status: ::TaskStatus::</li>
+                  <li class="list-group-item">Entry: ::TaskEntry::</li>
+                  <li class="list-group-item">Project: ::TaskProject::</li>
+                  <li class="list-group-item">Due: ::TaskDue::</li>
+                  <li class="list-group-item">Priority: ::TaskPriority::</li>
+                  <li class="list-group-item">Tags: ::TaskTags::</li>
+              </ul>
+          </div>
+          <div class="btn-group task-actions" role="group" aria-label="...">
+              <button class="btn btn-default edit-task">Edit</button>
+              <button class="btn btn-default delete-task">Delete</button>
+          </div>
       </div>
-      <div class="task-body">
-          <h4>::TaskDesc::</h4>
-          <p>ID: ::TaskId::</p>
-          <p>Status: ::TaskStatus::</p>
-          <p>Entry: ::TaskEntry::</p>
-          <p>Project: ::TaskProject::</p>
-          <p>Due: ::TaskDue::</p>
-          <p>Urgency: ::TaskUrgency::</p>
-          <p>Priority: ::TaskPriority::</p>
-          <p>Tags: ::TaskTags::</p>
-      </div>
-    </script>
+      </script>
+
+    <!--<script type="text/html" id="task_template">-->
+      <!--<div class="task-body">-->
+          <!--<h4 class="task-title">::TaskDesc::</h4>-->
+
+          <!--<p>ID: ::TaskId::</p>-->
+          <!--&lt;!&ndash;<p>Status: ::TaskStatus::</p>&ndash;&gt;-->
+          <!--<p>Entry: ::TaskEntry::</p>-->
+          <!--&lt;!&ndash;<p>Project: ::TaskProject::</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p>Due: ::TaskDue::</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p>Urgency: ::TaskUrgency::</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p>Priority: ::TaskPriority::</p>&ndash;&gt;-->
+          <!--&lt;!&ndash;<p>Tags: ::TaskTags::</p>&ndash;&gt;-->
+      <!--</div>-->
+      <!--<div class="task-actions">-->
+          <!--<button class="btn btn-xs edit-task">Edit</button>-->
+          <!--<button class="btn btn-xs delete-task">Delete</button>-->
+      <!--</div>-->
+    <!--</script>-->
 
     <script type="text/html" id="board_template">
       <h3 class="board-title">::BoardName::</h3>

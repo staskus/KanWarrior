@@ -15,6 +15,10 @@ form {
   /*padding-top: 15px;*/
 }
 
+.extra-info {
+    display: none;
+}
+
 
 .hide-alert {
     float: right;
@@ -22,9 +26,6 @@ form {
     margin-right: 5px;
 }
 
-.task-body {
-    word-wrap: break-word;
-}
 .centerBlock {
     display: table;
     margin: 0 auto;
@@ -95,8 +96,10 @@ form {
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
   border-radius: 4px;
+  min-height: 500px;
 }
 .task-items {
+    min-height: 400px;
   padding: 20px 0;
   text-align: left;
   list-style: none;
@@ -109,20 +112,43 @@ form {
 }
 .task {
   position: relative;
-  padding: 10px;
+  /*padding: 10px;*/
   background-color: #fff;
   border: 1px solid #aaa;
-  border-radius: 4px;
+  border-radius: 10px;
   margin-bottom: 10px;
 }
 .task:last-child {
   margin-bottom: 0;
 }
 .task-actions {
-  position: absolute;
-  top: 4px;
-  right: 4px;
+    width: 101%;
+    /*background-color: red;*/
+  /*position: absolute;*/
+  /*top: 4px;*/
+  /*right: 4px;*/
 }
+.task-title {
+    text-align: center;
+    /*width: 100px;*/
+    /*background-color: yellow;*/
+}
+
+.task-body {
+    /*height: 200px;*/
+    word-wrap: break-word;
+    /*background-color: #555500;*/
+
+}
+
+.edit-task, .delete-task {
+    width: 50%;
+}
+
+/*.btn-group {*/
+    /*width: 100%;!important;*/
+/*}*/
+
 #add_new_board {
   margin-top: 20px;
 }

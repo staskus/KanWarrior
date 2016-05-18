@@ -7,10 +7,6 @@ function editTask(task) {
 }
 
 function deleteTask(id) { // can't make ajax :/
-
-
-    id = id +1;
-    //alert(id);
     post('/delete_task', {id: id});
     //
     //$.ajax({
@@ -208,4 +204,22 @@ String.prototype.insert = function (index, string) {
 function hide() {
     document.getElementById("calDAV").classList.add('hidden');
     calendars = null;
+}
+
+function toggleExtraInfo(id, id2) {
+
+    id = id.substring(9, id.length);
+    id = id - 1;
+
+    var div = document.getElementsByClassName('extra-info');
+    var div2 = document.getElementsByClassName('panel-body');
+
+    if (div[id].style.display !== 'none') {
+        div[id].style.display = 'none';
+        div2[id].style.display = 'block';
+    }
+    else {
+        div[id].style.display = 'block';
+        div2[id].style.display = 'none';
+    }
 }
