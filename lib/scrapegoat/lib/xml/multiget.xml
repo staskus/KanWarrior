@@ -6,7 +6,7 @@
     <c:filter>
         <c:comp-filter name="VCALENDAR" />
     </c:filter>
-    <!--<% gets.forEach(function (get) {%>-->
-    <!--<d:href><%= get.ics %></d:href>-->
-    <!--<% }); %>-->
+    <% gets.forEach(function (get) {%>
+    <d:href><%= get.ics %></d:href>
+    <% }); %>
 </c:calendar-multiget>
