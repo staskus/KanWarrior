@@ -260,7 +260,7 @@ window.onload = function () {
     if(button.classList.contains("delete-task")) {
       if (confirm('Are you sure ?'))
       {
-        alert(e);
+        //alert(e);
         MyApp.deleteItem(e);
         }
     }

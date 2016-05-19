@@ -45,11 +45,9 @@
 
       <div class="container main center">
         <div class="centerBlock">
-            <%if (calendars != null) { %>
+            <%if (CalDAVinfo != null) { %>
             <div id="calDAV" class="alert alert-success" role="alert">
-                    <% for(i=0; i<calendars.length; i++) {%>
-                        <strong><%= calendars[i].name %>:</strong> <%= calendars[i].description %> ;
-                    <% } %>
+                <%= CalDAVinfo %>
                 <!--<button type="button" class="hide-alert btn btn-danger btn-xs" onclick="hide()">Close</button>-->
                 <button type="button"  onclick="hide()" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>

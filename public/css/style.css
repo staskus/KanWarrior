@@ -205,3 +205,7 @@ form {
 .container {
   width: 1600px !important;
 }
+
+#calDAV {
+    text-align: center;
+}
