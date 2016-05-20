@@ -206,6 +206,6 @@ form {
   width: 1600px !important;
 }
 
-#calDAV {
+#calDAV, .modal-title {
     text-align: center;
 }
