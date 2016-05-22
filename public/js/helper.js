@@ -11,8 +11,8 @@ function editTask(task) {
     });
 }
 
-function deleteTask(id) {
-    post('/delete_task', {id: id});
+function deleteTask(uuid) {
+    post('/delete_task', {uuid: uuid});
 }
 
 function returnBoards() {

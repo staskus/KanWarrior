@@ -2,6 +2,7 @@ var MyApp = {
     list: [],
     CreateItem: function (itemData) {
         var self = this;
+        this.uuid = itemData.uuid;
         this.id = itemData.id || '';
         this.desc = itemData.desc || '';
         this.status = itemData.status || '';
@@ -34,13 +35,14 @@ var MyApp = {
                       </div>
                       <div class="btn-group task-actions" role="group" aria-label="...">
                           <button class="btn btn-default edit-task" disabled="disabled">Edit</button>
-                          <button class="btn btn-default delete-task" disabled="disabled">Delete</button>
+                          <button class="btn btn-default delete-task">Delete</button>
                       </div>
                   </div>`;
                 }
 
                 temp = temp.replace(new RegExp("::block-id::", "g"), ('block-id:' + this.id));
                 temp = temp.replace(new RegExp("::TaskId::", "g"), (this.id));
+                temp = temp.replace(new RegExp("::TaskUuid::", "g"), (this.uuid));
                 temp = temp.replace(new RegExp("::TaskDesc::", "g"), (this.desc));
                 temp = temp.replace(new RegExp("::TaskStatus::", "g"), (this.status))
                 temp = temp.replace(new RegExp("::TaskEntry::", "g"), (this.entry))
@@ -69,6 +71,7 @@ var MyApp = {
                 var tagsStr = self.tags.join(' '); // for display/update purposes
 
                 myArray[myArray.length] = {
+                    uuid: self.uuid,
                     id: self.id,
                     desc: self.desc,
                     due: self.due,
@@ -109,7 +112,7 @@ var MyApp = {
         var taskIndex = element.getAttribute('data-index');
         var boardIndex = element.getAttribute('data-board-index');
         var task = this.list[boardIndex].tasks[taskIndex];
-        deleteTask(parseInt(task.id));
+        deleteTask(task.uuid);
         element.remove();
         MyApp.list[boardIndex].tasks.splice(taskIndex, 1);
         this.saveData();

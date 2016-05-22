@@ -38,6 +38,7 @@ module.exports.controller = function (app) {
                         taskArray[i] = helper.attachToBoard(taskArray[i]);
                         tasks.push(
                             {
+                                uuid: taskArray[i].uuid,
                                 id: i + 1,
                                 desc: taskArray[i].description,
                                 status: taskArray[i].status,
@@ -60,6 +61,7 @@ module.exports.controller = function (app) {
                             taskArray[i] = helper.attachToBoard(taskArray[i]);
                             tasks.push(
                                 {
+                                    uuid: taskArray[i].uuid,
                                     id: i + 1,
                                     desc: taskArray[i].description,
                                     status: taskArray[i].status,
@@ -103,7 +105,7 @@ module.exports.controller = function (app) {
     });
 
     app.post('/delete_task', urlencodedParser, function (req, res) {
-        taskManager.deleteTask(req.body.id);
+        taskManager.deleteTask(req.body.uuid);
         res.redirect('/');
     });
 
