@@ -7,7 +7,7 @@ var url = require('url');
 var express = require('express');
 var app = express();
 
-var route = require('./lib/controller.js');
+var route = require('./controllers/defaultController.js');
 route.controller(app);
 
 

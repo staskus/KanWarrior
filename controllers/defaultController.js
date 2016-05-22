@@ -1,10 +1,9 @@
-var taskManager = require("../lib/TaskManager");
-var Task = require("../lib/Task");
+var taskManager = require("../lib/taskManager");
+var Task = require("../models/Task");
 var callDAVWrap = require("../lib/callDAVWrap");
 var bodyParser = require('body-parser');
+var helper = require("../lib/helper");
 var urlencodedParser = bodyParser.urlencoded({extended: true});
-
-
 
 module.exports.controller = function (app) {
     app.use(bodyParser.urlencoded({extended: true}));
@@ -25,17 +24,9 @@ module.exports.controller = function (app) {
         {
             req.query.projects = "All";
         }
-        //console.log(req.query.tags);
 
         taskManager.getAllTasks((taskArray)=> {
-            //for (var i = 0; i < taskArray.length; i++) {
-            //    console.log("b4 upd: " + taskArray[i].id + " " + taskArray[i].description + " " + taskArray[i].due);
-            //}
             taskManager.update(taskArray);
-
-            //for (var i = 0; i < taskArray.length; i++) {
-            //    console.log("after upd: " + taskArray[i].id + " " + taskArray[i].description + " " + taskArray[i].due);
-            //}
 
             var tasks = [];
             var tags = [];
@@ -43,8 +34,8 @@ module.exports.controller = function (app) {
 
             for (var i = 0; i < taskArray.length; i++) {
                 if ((req.query.projects == taskArray[i].project) || (req.query.projects == "All")) { //filter tasks by projects
-                    if (compareTags(taskArray[i].tags, req.query.tags)) {
-                        taskArray[i] = attachToBoard(taskArray[i]);
+                    if (helper.compareTags(taskArray[i].tags, req.query.tags)) {
+                        taskArray[i] = helper.attachToBoard(taskArray[i]);
                         tasks.push(
                             {
                                 id: i + 1,
@@ -52,14 +43,12 @@ module.exports.controller = function (app) {
                                 status: taskArray[i].status,
                                 entry: taskArray[i].entry,
                                 project: taskArray[i].project,
-                                due: taskArray[i].due,// ?
+                                due: taskArray[i].due,
                                 urgency: taskArray[i].urgency,
-                                priority: taskArray[i].priority,// ?
+                                priority: taskArray[i].priority,
                                 tags: taskArray[i].tags,
                                 start: taskArray[i].start,
-                                name: 'Add Name', //board name
                                 parent: taskArray[i].parent,
-                                //parent: 'board_1',
                                 type: 'task'
                             }
                         )
@@ -67,8 +56,8 @@ module.exports.controller = function (app) {
                 }
                 else if (req.query.projects == "-") { //filter tasks with no projects
                     if ((taskArray[i].project == "") || (taskArray[i].project == null) || (taskArray[i].project == undefined)) {
-                        if (compareTags(taskArray[i].tags, req.query.tags)) {
-                            taskArray[i] = attachToBoard(taskArray[i]);
+                        if (helper.compareTags(taskArray[i].tags, req.query.tags)) {
+                            taskArray[i] = helper.attachToBoard(taskArray[i]);
                             tasks.push(
                                 {
                                     id: i + 1,
@@ -76,14 +65,12 @@ module.exports.controller = function (app) {
                                     status: taskArray[i].status,
                                     entry: taskArray[i].entry,
                                     project: taskArray[i].project,
-                                    due: taskArray[i].due,// ?
+                                    due: taskArray[i].due,
                                     urgency: taskArray[i].urgency,
-                                    priority: taskArray[i].priority,// ?
+                                    priority: taskArray[i].priority,
                                     tags: taskArray[i].tags,
                                     start: taskArray[i].start,
-                                    name: 'Add Name', //board name
                                     parent: taskArray[i].parent,
-                                    //parent: 'board_1',
                                     type: 'task'
                                 }
                             )
@@ -98,97 +85,29 @@ module.exports.controller = function (app) {
 
                 tags = tags.concat(taskArray[i].tags); //join all arrays of tags into one
                 tags = tags.reduce(function (a, b) {      //leave out duplicate tags
-                    if ((a.indexOf(b) < 0) && (!isBoardTag(b))) a.push(b);
+                    if ((a.indexOf(b) < 0) && (!helper.isBoardTag(b))) a.push(b);
                     return a;
                 }, []);
             }
 
             projects.push("All"); //Create ability to list tasks from all projects
             projects.push("-"); //Create ability to list all tasks with no projects
-            sortTasks(tasks);
+            helper.sortTasks(tasks);
             res.render('index.ejs', {tasks: tasks, projects: projects, tags: tags, CalDAVinfo: infoString});
         });
     });
 
-    function sortTasks(tasks) {
-
-        for (var i = 0; i < tasks.length; i++) {
-            var temp = tasks[i];
-            var j = i;
-
-            while (j > 0 && temp.urgency > tasks[j - 1].urgency) {
-                tasks[j] = tasks[j - 1];
-                j--;
-            }
-            tasks[j] = temp;
-        }
-        return tasks;
-    }
-
-    function compareTags(taskTags, requestTags) {
-
-        if (requestTags == null) {
-            return true;
-        } else {
-            if (typeof requestTags === 'string' || requestTags instanceof String) {// if checked only 1 tag
-                return taskTags.indexOf(requestTags) > -1;
-            } else {                                                                // if multiple
-                var counter = 0;
-                for (var j = 0; j < requestTags.length; j++) {
-                    if (taskTags.indexOf(requestTags[j]) > -1) {
-                        counter++;
-                    }
-                }
-                return counter == requestTags.length;
-            }
-        }
-    }
-
-    function isBoardTag(tag) {
-        if ((tag == "inbox") || (tag == "firstBacklog") || (tag == "secondBacklog") || (tag == "inProgress") || (tag == "done"))
-            return true;
-        else
-            return false;
-    }
-
-    function attachToBoard(task) {
-        //"board_index" is for frontend visualization
-        var inbox = "inbox"; //board_1
-        var firstBacklog = "firstBacklog"; //board_2
-        var secondBacklog = "secondBacklog";//board_3
-        var inProgress = "inProgress"; //board_4
-        var done = "done";//board_5
-
-        if (taskManager.tagExists(task, inbox))
-            task.parent = "board_1";
-        else if (taskManager.tagExists(task, secondBacklog))
-            task.parent = "board_3";
-        else if (taskManager.tagExists(task, firstBacklog))
-            task.parent = "board_2";
-        else if (taskManager.tagExists(task, inProgress))
-            task.parent = "board_4";
-        else if (taskManager.tagExists(task, done))
-            task.parent = "board_5";
-
-        return task;
-    }
-
-
     app.post('/new_task', urlencodedParser, function (req, res) {
-        //console.log(req.body.description + " " + req.body.due + " " + req.body.priority + " " + req.body.project + " " + req.body.tags)
         taskManager.addTask(req.body.description, req.body.due, req.body.priority, req.body.project, req.body.tags);
         res.redirect('/');
     });
 
     app.post('/delete_task', urlencodedParser, function (req, res) {
-        //console.log("trying to delete" + req.body.id);
         taskManager.deleteTask(req.body.id);
         res.redirect('/');
     });
 
     app.post('/edit_task', urlencodedParser, function (req, res) {
-        //console.log("editing: " + req.body.id + " " + req.body.description + " " + req.body.due + " " + req.body.priority + " " + req.body.project + " " + req.body.tags)
-        //console.log("trying to delete" + req.body.id);
         taskManager.editTask(req.body.id, req.body.description, req.body.due, req.body.priority, req.body.project, req.body.tags, req.body.status, req.body.start);
         res.redirect('/');
     });
@@ -197,7 +116,6 @@ module.exports.controller = function (app) {
         app.locals.userName = req.body.userName;
         app.locals.password = req.body.password;
         app.locals.url = req.body.url;
-        console.log(app.locals.userName + ' ' + app.locals.password + ' ' + app.locals.url);
         res.redirect('/');
     });
 
@@ -236,9 +154,6 @@ module.exports.controller = function (app) {
                         if(uuids1.indexOf(list[i].uuid) == -1 && descriptions1.indexOf(list[i].title) == -1 && list[i].status != 'completed') {
                             counter1++;
                             taskManager.addTask(list[i].title, list[i].due, list[i].priority, list[i].project, '', list[i].entry);
-
-                        //}else if (descriptions1.indexOf(list[i].title) == -1 && list[i].status != 'completed') { // Update tasks from server
-                        //
                         }
                         else if (list[i].status == 'completed') {
                             var ind = descriptions1.indexOf(list[i].title);
@@ -252,10 +167,12 @@ module.exports.controller = function (app) {
 
                     for (i = 0; i < taskArray.length; i++) { // send tasks to server if they are not already there
                         if(uuids2.indexOf(taskArray[i].uuid) == -1) {
+
                             counter2++;
                             callDAVWrap.sendTask(taskArray[i]);
                         }
                         else if (uuids2.indexOf(taskArray[i].uuid) != -1) { // update server to local changes
+
                             var ind = uuids2.indexOf(taskArray[i].uuid);
                             if (list[ind].title != taskArray[i].description || list[ind].due != taskArray[i].due || list[ind].status != taskArray[i].status || list[ind].priority != taskArray[i].priority) {
                                 taskArray[i].eTag = list[ind].eTag;
@@ -273,7 +190,3 @@ module.exports.controller = function (app) {
         });
     });
 };
-
-
-//console.log("editing1: " + taskArray[i].description + " " + taskArray[i].due + " " + taskArray[i].priority + " " + taskArray[i].status);
-//console.log("editing2 " + list[ind].title + " " + list[ind].due + " " + list[ind].priority + " " + list[ind].status);
