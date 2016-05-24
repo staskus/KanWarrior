@@ -19,6 +19,7 @@ module.exports.controller = function (app) {
         var tags = [];
         var lastTags;
         var infoString = app.locals.infoString;
+        var submitted = false;
 
         if (app.locals.first == 1) {    // manage display of CalDAV info panel
             app.locals.infoString = null;
@@ -27,23 +28,31 @@ module.exports.controller = function (app) {
 
         if (req.query.projects == null) // Set values for constant project filtering
         {
-            if(app.locals.lastProjectVal != null)
+            if (app.locals.lastProjectVal != null)
                 projects.lastVal = app.locals.lastProjectVal;
             else
                 projects.lastVal = "All";
             req.query.projects = projects.lastVal;
         } else {
+            submitted = true;
             projects.lastVal = req.query.projects;
         }
 
-        if (req.query.tags == null) // Set values for constant tags filtering
-        {
-            if(app.locals.lastTagsVal != null)
-                lastTags = app.locals.lastTagsVal;
+        if (submitted) {                     // Set values for constant tags filtering
+            if (req.query.tags == null)
+                lastTags = null;
             else
-                tags.lastVal = '';
-            req.query.tags = lastTags;
+                lastTags = req.query.tags;
         } else {
+            if (app.locals.lastTagsVal != null && app.locals.lastTagsVal != '') {
+                lastTags = app.locals.lastTagsVal;
+            }
+            else
+                lastTags = null;
+            if (typeof lastTags === 'string')
+                req.query.tags = lastTags.split(',');
+            else
+                req.query.tags = lastTags;
             lastTags = req.query.tags;
         }
 
@@ -78,12 +87,18 @@ module.exports.controller = function (app) {
 
             if (lastTags == null)
                 lastTags = '';
-
+            console.log("VISI LAST: |" + lastTags + "|");
             projects.push("All"); //Create ability to list tasks from all projects
             projects.push("-"); //Create ability to list all tasks with no projects
 
             helper.sortTasks(tasks);
-            res.render('index.ejs', {tasks: tasks, projects: projects, tags: tags, lastTags:lastTags, CalDAVinfo: infoString});
+            res.render('index.ejs', {
+                tasks: tasks,
+                projects: projects,
+                tags: tags,
+                lastTags: lastTags,
+                CalDAVinfo: infoString
+            });
         });
     });
 
@@ -118,7 +133,7 @@ module.exports.controller = function (app) {
         authorization.user = app.locals.userName;
         authorization.pass = app.locals.password;
         authorization.uri = app.locals.url;
-        if(authorization.user == null || authorization.pass == null || authorization.uri == null){
+        if (authorization.user == null || authorization.pass == null || authorization.uri == null) {
             console.log("Wrong credentials")
             res.redirect('/');
         }
@@ -128,8 +143,8 @@ module.exports.controller = function (app) {
                 var descriptions1 = [];
 
                 for (var i = 0; i < taskArray.length; i++) { // gather information about existing tasks in project
-                        uuids1.push(taskArray[i].uuid);
-                        descriptions1.push(taskArray[i].description);
+                    uuids1.push(taskArray[i].uuid);
+                    descriptions1.push(taskArray[i].description);
                 }
 
                 callDAVWrap.getTasks(function (list) {
@@ -144,7 +159,7 @@ module.exports.controller = function (app) {
                         descriptions2.push(list[i].title);
                         indexes2.push(i);
 
-                        if(uuids1.indexOf(list[i].uuid) == -1 && descriptions1.indexOf(list[i].title) == -1 && list[i].status != 'completed') {
+                        if (uuids1.indexOf(list[i].uuid) == -1 && descriptions1.indexOf(list[i].title) == -1 && list[i].status != 'completed') {
                             counter1++;
                             taskManager.addTask(list[i].title, list[i].due, list[i].priority, list[i].project, '', list[i].entry);
                         }
@@ -159,7 +174,7 @@ module.exports.controller = function (app) {
                     }
 
                     for (i = 0; i < taskArray.length; i++) { // send tasks to server if they are not already there
-                        if(uuids2.indexOf(taskArray[i].uuid) == -1) {
+                        if (uuids2.indexOf(taskArray[i].uuid) == -1) {
 
                             counter2++;
                             callDAVWrap.sendTask(taskArray[i]);
