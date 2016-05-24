@@ -143,6 +143,8 @@ var MyApp = {
         document.getElementById('edit_task').value = "true";
         document.getElementById('edit_task_index').value = index.taskIndex;
         document.getElementById('parent_board').value = 'board_' + (parseInt(index.boardIndex) + 1);
+        document.getElementById('lastProjectVal').value = lastProjectVal;
+        document.getElementById('lastTagsVal').value = lastTagsVal;
     },
     openBoardForm: function () {
         document.getElementsByClassName('overlay')[0].className = "overlay open";
@@ -222,7 +224,7 @@ var MyApp = {
             task.due = newDue;
         }
 
-        editTask(task);
+        editTask(task, lastProjectVal, lastTagsVal);
     },
     init: function () {
 

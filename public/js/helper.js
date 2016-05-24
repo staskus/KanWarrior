@@ -1,4 +1,4 @@
-function editTask(task) {
+function editTask(task, lastProjectVal, lastTagsVal) {
     post('/edit_task', {
         id: task.id,
         description: task.desc,
@@ -7,7 +7,9 @@ function editTask(task) {
         project: task.project,
         tags: task.tags,
         status: task.status,
-        start: task.start
+        start: task.start,
+        lastProjectVal: lastProjectVal,
+        lastTagsVal: lastTagsVal
     });
 }
 

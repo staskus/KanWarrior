@@ -33,17 +33,51 @@
                     <div class="form-group">
                         <select name="projects">
                             <% for(var i = 0; i < projects.length; i++) { %>
+                            <% if (projects[i] == projects.lastVal) { %>
+                            <option selected="selected"><%= projects[i] %></option>
+                            <% } else { %>
                             <option><%= projects[i] %></option>
+                            <% } %>
                             <% } %>
                         </select>
                     </div>
-                    <% for(var i = 0; i < tags.length; i++) { %>
-                    <div class="checkbox tag-checkbox">
-                        <label>
-                            <input type="checkbox" class="checkbox-input" name="tags"
-                                   value="<%= tags[i] %>"><%= tags[i] %><br>
-                        </label>
-                    </div>
+
+                    <% if (typeof lastTags !== 'string') { %>
+                        <% for(var i = 0; i < tags.length; i++) { %>
+                            <% if (lastTags.indexOf(tags[i]) > -1) { %>
+                            <div class="checkbox tag-checkbox">
+                                <label>
+                                    <input type="checkbox" class="checkbox-input" name="tags"
+                                           value="<%= tags[i] %>" checked="checked"><%= tags[i] %><br>
+                                </label>
+                            </div>
+                            <% } else { %>
+                            <div class="checkbox tag-checkbox">
+                                <label>
+                                    <input type="checkbox" class="checkbox-input" name="tags"
+                                           value="<%= tags[i] %>"><%= tags[i] %><br>
+                                </label>
+                            </div>
+                            <% } %>
+                        <% } %>
+                    <% } else {%>
+                        <% for(var i = 0; i < tags.length; i++) { %>
+                            <% if (lastTags == tags[i]) { %>
+                            <div class="checkbox tag-checkbox">
+                                <label>
+                                    <input type="checkbox" class="checkbox-input" name="tags"
+                                           value="<%= tags[i] %>" checked="checked"><%= tags[i] %><br>
+                                </label>
+                            </div>
+                            <% } else { %>
+                            <div class="checkbox tag-checkbox">
+                                <label>
+                                    <input type="checkbox" class="checkbox-input" name="tags"
+                                           value="<%= tags[i] %>"><%= tags[i] %><br>
+                                </label>
+                            </div>
+                            <% } %>
+                        <% } %>
                     <% } %>
                 </form>
             </div>
@@ -52,6 +86,8 @@
 </nav>
 
 <div class="container main center">
+
+
     <div class="centerBlock">
         <% if (CalDAVinfo != null) { %>
         <div id="calDAV" class="alert alert-success" role="alert">
@@ -110,6 +146,8 @@
                     <input type="hidden" id="parent_board"/>
                     <input type="hidden" id="edit_task" value="false"/>
                     <input type="hidden" id="edit_task_index"/>
+                    <input type="hidden" id="lastProjectVal" name="lastProjectVal"/>
+                    <input type="hidden" id="lastTagsVal" name="lastTagsVal"/>
                     <button id="task-submit" type="submit" class="btn btn-primary">Add Task</button>
                 </form>
 
@@ -195,6 +233,8 @@
 <script src="js/helper.js"></script>
 <script type="text/javascript">
     var tasksList = JSON.parse(htmlDecode("<%= JSON.stringify(tasks) %>"));
+    var lastProjectVal = "<%=projects.lastVal %>";
+    var lastTagsVal = "<%=lastTags %>";
 </script>
 
 
