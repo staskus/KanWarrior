@@ -1,5 +1,6 @@
 #ignore packages installed by npm
 node_modules
+/executable
 *~
 .DS_STORE
 credentials.js

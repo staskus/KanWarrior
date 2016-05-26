@@ -87,7 +87,6 @@ module.exports.controller = function (app) {
 
             if (lastTags == null)
                 lastTags = '';
-            console.log("VISI LAST: |" + lastTags + "|");
             projects.push("All"); //Create ability to list tasks from all projects
             projects.push("-"); //Create ability to list all tasks with no projects
 
@@ -116,7 +115,6 @@ module.exports.controller = function (app) {
         taskManager.editTask(req.body.id, req.body.description, req.body.due, req.body.priority, req.body.project, req.body.tags, req.body.status, req.body.start);
         app.locals.lastProjectVal = req.body.lastProjectVal;
         app.locals.lastTagsVal = req.body.lastTagsVal;
-        console.log("GAUNAM: " + app.locals.lastTagsVal);
         res.redirect('/');
     });
 
